@@ -32,7 +32,61 @@ public class VehicleMovement : MonoBehaviour {
 
   public VehicleData vehicleData;
   public InputController playerInput;
-  // public Wheel_Controller[] wheelControllers;
+  public VehicleWheel[] wheelControllers;
   [SerializeField]
   public Rigidbody vehicleRB;
+
+  public void Start() {
+    // Component Init
+    if (vehicleData == null) {
+      vehicleData = gameObject.GetComponent<VehicleData>();
+    }
+    if (playerInput == null) {
+      playerInput = gameObject.GetComponentInParent<InputController>();
+    }
+    if (vehicleRB == null) {
+      vehicleRB = gameObject.GetComponentInParent<Rigidbody>();
+    }
+    if (wheelControllers.Length == 0) {
+      wheelControllers = gameObject.GetComponentsInChildren<VehicleWheel>();
+    }
+
+    airborneState = GetComponent<AirborneVehicle>();
+    tiltState = GetComponent<TiltVehicle>();
+    idleState = GetComponent<IdleVehicle>();
+    driveState = GetComponent<DriveVehicle>();
+    brakeState = GetComponent<BrakeVehicle>();
+    skidState = GetComponent<SkidVehicle>();
+
+    currentState = MovementState.Idle;
+    ChangeState();
+
+    gravityForce = -Physics.gravity.y * (vehicleData.weight * 0.5f);
+  }
+
+  public void ChangeState() {
+    switch (currentState) {
+      // case MovementState.Airborne:
+      //   airborneState.EnterState();
+      //   break;
+      // case MovementState.Tilt:
+      //   tiltState.EnterState();
+      //   break;
+      // case MovementState.Idle:
+      //   idleState.EnterState();
+      //   break;
+      // case MovementState.Drive:
+      //   driveState.EnterState();
+      //   break;
+      // case MovementState.Brake:
+      //   brakeState.EnterState();
+      //   break;
+      // case MovementState.Skid:
+      //   skidState.EnterState();
+      //   break;
+      default:
+        idleState.EnterState();
+        break;
+    }
+  }
 }

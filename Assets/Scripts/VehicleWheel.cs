@@ -150,4 +150,14 @@ public class VehicleWheel : MonoBehaviour {
       Debug.Log("not grounded! " + tirePosition);
     }
   }
+
+  void FixedUpdate() {
+    ApplyWheelForces();
+  }
+
+  void ApplyWheelForces() {
+    Vector3 tirePosition = transform.position;
+    // Debug.DrawRay(tirePosition, groundedForce, Color.green);
+    vehicleRB.AddForceAtPosition(wheelForce, tirePosition);
+  }
 }
