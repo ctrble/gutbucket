@@ -11,6 +11,7 @@ public class VehicleWheel : MonoBehaviour {
   private Rigidbody vehicleRB;
   private CapsuleCollider vehicleCollider;
   public GameObject wheelPrefab;
+  public Vector3 defaultWheelCenter;
   public Vector3 defaultWheelPosition;
   public GameObject wheelChild;
 
@@ -52,15 +53,14 @@ public class VehicleWheel : MonoBehaviour {
       vehicleMovement = gameObject.GetComponentInParent<VehicleMovement>();
     }
 
-    // defaultWheelPosition = wheelPrefab.transform.position;
-
     // how big is this thing
     Bounds wheelBounds = wheelPrefab.GetComponent<MeshRenderer>().bounds;
-    defaultWheelPosition = wheelBounds.center;
     wheelRadiusX = wheelBounds.extents.x;
     wheelRadiusY = wheelBounds.extents.y;
-    // wheelRadiusX = Mathf.Abs(wheelBounds.extents.x * wheelPrefab.transform.localScale.x);
-    // wheelRadiusY = Mathf.Abs(wheelBounds.extents.y * wheelPrefab.transform.localScale.y);
+
+    // and where is it
+    defaultWheelCenter = wheelBounds.center;
+    defaultWheelPosition = wheelPrefab.transform.position;
 
     // bit of wiggle room
     skinWidth = vehicleCollider.radius * (vehicleCollider.radius * 0.2f);
@@ -69,22 +69,14 @@ public class VehicleWheel : MonoBehaviour {
   }
 
   void SetUpWheels() {
-    // set at the wheel's position
-    // transform.position = new Vector3(defaultWheelPosition.x, defaultWheelPosition.y + wheelRadiusY, defaultWheelPosition.z);
-
-    // Vector3 positionOfWheel = transform.TransformPoint(wheelPrefab.transform.position);
-    Vector3 positionOfWheel = defaultWheelPosition;
+    // place where the wheel is
+    Vector3 positionOfWheel = defaultWheelCenter;
     transform.position = positionOfWheel;
 
+    // then move upwards
     Vector3 local = transform.localPosition;
     local.y += wheelRadiusY + vehicleCollider.radius + skinWidth;
     transform.localPosition = local;
-
-    // move up to the top of the wheel
-    // Vector3 local = transform.localPosition;
-    // local.y += vehicleCollider.radius + wheelRadiusY;
-    // local.y += wheelRadiusY;
-    // transform.localPosition = local;
 
     // Physics Init
     hoverForce = vehicleMovement.gravityForce;
@@ -93,17 +85,10 @@ public class VehicleWheel : MonoBehaviour {
     // Wheel Init
     grounded = false;
 
-    // Position the wheel
-    // Quaternion wheelRotation = Quaternion.LookRotation(transform.forward, -transform.right);
-
-    // wheelRadiusY = wheelPrefab.GetComponent<MeshFilter>().mesh.bounds.extents.y;
+    // TODO: check these they're probably not good
     wheelRestOffset = -transform.up * (hoverHeight - wheelRadiusY);
     wheelGroundedOffset = wheelRestOffset;
     wheelMaxOffset = -transform.up * (hoverHeight - (wheelRadiusY * 2));
-
-    // transform.position += wheelRestOffset;
-
-    // wheelChild = Instantiate(wheelPrefab, transform.position + wheelRestOffset, wheelRotation, transform);
   }
 
   void Update() {
@@ -113,7 +98,6 @@ public class VehicleWheel : MonoBehaviour {
   void GetWheelData() {
     grounded = false;
     Vector3 tirePosition = transform.position;
-    // Vector3 tirePosition = wheelPrefab.transform.position;
     wheelBelowCenter = transform.root.position.y > tirePosition.y;
 
     Debug.DrawRay(tirePosition, -transform.up * hoverHeight, Color.red);
@@ -145,10 +129,6 @@ public class VehicleWheel : MonoBehaviour {
         wheelForce = -transform.up * vehicleMovement.gravityForce;
       }
     }
-
-    if (!grounded) {
-      Debug.Log("not grounded! " + tirePosition);
-    }
   }
 
   void FixedUpdate() {
@@ -157,7 +137,29 @@ public class VehicleWheel : MonoBehaviour {
 
   void ApplyWheelForces() {
     Vector3 tirePosition = transform.position;
-    // Debug.DrawRay(tirePosition, groundedForce, Color.green);
     vehicleRB.AddForceAtPosition(wheelForce, tirePosition);
+  }
+
+  void LateUpdate() {
+    ClampWheelPosition();
+  }
+
+  void ClampWheelPosition() {
+    // TODO: this is all wonky cause those wheels are yikes
+
+    // Vector3 targetOffset = grounded ? wheelGroundedOffset : wheelRestOffset;
+
+    // // smooth out the new position
+    // Vector3 lerpedOffset = Vector3.Lerp(wheelPrefab.transform.position, transform.position + targetOffset, 0.5f);
+    // wheelPrefab.transform.position = lerpedOffset;
+
+    // // only move up and down, dammit
+    // Vector3 resetPosition = wheelPrefab.transform.localPosition;
+    // wheelPrefab.transform.localPosition = new Vector3(defaultWheelPosition.x, resetPosition.y, defaultWheelPosition.z);
+
+    // // clamp the wheel height
+    // if (wheelPrefab.transform.localPosition.y > wheelMaxOffset.y) {
+    //   wheelPrefab.transform.localPosition = new Vector3(defaultWheelPosition.x, wheelMaxOffset.y, defaultWheelPosition.z);
+    // }
   }
 }
