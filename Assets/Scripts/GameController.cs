@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour {
   }
 
   void OnEnable() {
-    GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+    if (!GameObject.FindWithTag("Player")) {
+      GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+    }
   }
 }
