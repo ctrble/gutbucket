@@ -71,7 +71,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -85,6 +85,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7801020686613526776}
+  - component: {fileID: 2120829547188508424}
   m_Layer: 0
   m_Name: Back Left
   m_TagString: Untagged
@@ -106,6 +107,28 @@ Transform:
   m_Father: {fileID: 6356051023858015551}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2120829547188508424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405992379020624391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff51789dc93f4de68f6d2d7579c5204, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelPrefab: {fileID: 2926240650864961226}
+  defaultWheelPosition: {x: 0, y: 0, z: 0}
+  wheelChild: {fileID: 0}
+  grounded: 0
+  groundNormal: {x: 0, y: 1, z: 0}
+  steering: 0
+  skinWidth: 0
+  wheelRadiusX: 0
+  wheelRadiusY: 0
+  hoverHeight: 0
 --- !u!1 &2983598452215927820
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,6 +410,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4064731099617289318}
+  - component: {fileID: 4458958354382668453}
   m_Layer: 0
   m_Name: Back Right
   m_TagString: Untagged
@@ -408,6 +432,28 @@ Transform:
   m_Father: {fileID: 6356051023858015551}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4458958354382668453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5213499853170231977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff51789dc93f4de68f6d2d7579c5204, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelPrefab: {fileID: 2825434811993174888}
+  defaultWheelPosition: {x: 0, y: 0, z: 0}
+  wheelChild: {fileID: 0}
+  grounded: 0
+  groundNormal: {x: 0, y: 1, z: 0}
+  steering: 0
+  skinWidth: 0
+  wheelRadiusX: 0
+  wheelRadiusY: 0
+  hoverHeight: 0
 --- !u!1 &8301489629308695334
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,6 +463,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 163915143569351374}
+  - component: {fileID: 8509784037013075737}
   m_Layer: 0
   m_Name: Front Right
   m_TagString: Untagged
@@ -438,6 +485,28 @@ Transform:
   m_Father: {fileID: 6356051023858015551}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8509784037013075737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8301489629308695334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff51789dc93f4de68f6d2d7579c5204, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelPrefab: {fileID: 8389180056917218156}
+  defaultWheelPosition: {x: 0, y: 0, z: 0}
+  wheelChild: {fileID: 0}
+  grounded: 0
+  groundNormal: {x: 0, y: 1, z: 0}
+  steering: 0
+  skinWidth: 0
+  wheelRadiusX: 0
+  wheelRadiusY: 0
+  hoverHeight: 0
 --- !u!1 &9105913102034169473
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,6 +516,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7428548730549359455}
+  - component: {fileID: 3662513568348261314}
   m_Layer: 0
   m_Name: Front Left
   m_TagString: Untagged
@@ -468,6 +538,28 @@ Transform:
   m_Father: {fileID: 6356051023858015551}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3662513568348261314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9105913102034169473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff51789dc93f4de68f6d2d7579c5204, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelPrefab: {fileID: 8203225987046036590}
+  defaultWheelPosition: {x: 0, y: 0, z: 0}
+  wheelChild: {fileID: 0}
+  grounded: 0
+  groundNormal: {x: 0, y: 1, z: 0}
+  steering: 0
+  skinWidth: 0
+  wheelRadiusX: 0
+  wheelRadiusY: 0
+  hoverHeight: 0
 --- !u!1 &9210475723126300871
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,9 +663,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8febdbd9084ff4cc281313e7d030ab8b, type: 3}
+--- !u!1 &8203225987046036590 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -6860885489744788823, guid: 8febdbd9084ff4cc281313e7d030ab8b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5845261571307116231}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8389180056917218156 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -6524923397383191125, guid: 8febdbd9084ff4cc281313e7d030ab8b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5845261571307116231}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2926240650864961226 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -467650660278620147, guid: 8febdbd9084ff4cc281313e7d030ab8b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5845261571307116231}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1469368250253524445 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 8febdbd9084ff4cc281313e7d030ab8b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5845261571307116231}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2825434811993174888 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -708332259494550097, guid: 8febdbd9084ff4cc281313e7d030ab8b,
     type: 3}
   m_PrefabInstance: {fileID: 5845261571307116231}
   m_PrefabAsset: {fileID: 0}

@@ -11,6 +11,7 @@ public class VehicleWheel : MonoBehaviour {
   private Rigidbody vehicleRB;
   private CapsuleCollider vehicleCollider;
   public GameObject wheelPrefab;
+  public Vector3 defaultWheelPosition;
   public GameObject wheelChild;
 
   [Space]
@@ -27,7 +28,9 @@ public class VehicleWheel : MonoBehaviour {
   public bool steering = false;
   private bool wheelBelowCenter;
   public float skinWidth;
-  public float wheelRadius;
+  public float wheelRadiusX;
+  public float wheelRadiusY;
+  [SerializeField]
   private float hoverHeight;
   private float hoverForce;
   private Vector3 wheelRestOffset;
@@ -49,15 +52,39 @@ public class VehicleWheel : MonoBehaviour {
       vehicleMovement = gameObject.GetComponentInParent<VehicleMovement>();
     }
 
+    // defaultWheelPosition = wheelPrefab.transform.position;
+
+    // how big is this thing
+    Bounds wheelBounds = wheelPrefab.GetComponent<MeshRenderer>().bounds;
+    defaultWheelPosition = wheelBounds.center;
+    wheelRadiusX = wheelBounds.extents.x;
+    wheelRadiusY = wheelBounds.extents.y;
+    // wheelRadiusX = Mathf.Abs(wheelBounds.extents.x * wheelPrefab.transform.localScale.x);
+    // wheelRadiusY = Mathf.Abs(wheelBounds.extents.y * wheelPrefab.transform.localScale.y);
+
+    // bit of wiggle room
+    skinWidth = vehicleCollider.radius * (vehicleCollider.radius * 0.2f);
+
     SetUpWheels();
   }
 
   void SetUpWheels() {
-    // Set the height of the wheel
-    skinWidth = vehicleCollider.radius * (vehicleCollider.radius * 0.2f);
+    // set at the wheel's position
+    // transform.position = new Vector3(defaultWheelPosition.x, defaultWheelPosition.y + wheelRadiusY, defaultWheelPosition.z);
+
+    // Vector3 positionOfWheel = transform.TransformPoint(wheelPrefab.transform.position);
+    Vector3 positionOfWheel = defaultWheelPosition;
+    transform.position = positionOfWheel;
+
     Vector3 local = transform.localPosition;
-    local.y = vehicleCollider.radius - skinWidth;
+    local.y += wheelRadiusY + vehicleCollider.radius + skinWidth;
     transform.localPosition = local;
+
+    // move up to the top of the wheel
+    // Vector3 local = transform.localPosition;
+    // local.y += vehicleCollider.radius + wheelRadiusY;
+    // local.y += wheelRadiusY;
+    // transform.localPosition = local;
 
     // Physics Init
     hoverForce = vehicleMovement.gravityForce;
@@ -67,13 +94,60 @@ public class VehicleWheel : MonoBehaviour {
     grounded = false;
 
     // Position the wheel
-    Quaternion wheelRotation = Quaternion.LookRotation(transform.forward, -transform.right);
+    // Quaternion wheelRotation = Quaternion.LookRotation(transform.forward, -transform.right);
 
-    wheelRadius = wheelPrefab.GetComponent<CapsuleCollider>().radius;
-    wheelRestOffset = -transform.up * (hoverHeight - wheelRadius);
+    // wheelRadiusY = wheelPrefab.GetComponent<MeshFilter>().mesh.bounds.extents.y;
+    wheelRestOffset = -transform.up * (hoverHeight - wheelRadiusY);
     wheelGroundedOffset = wheelRestOffset;
-    wheelMaxOffset = -transform.up * (hoverHeight - (wheelRadius * 2));
+    wheelMaxOffset = -transform.up * (hoverHeight - (wheelRadiusY * 2));
 
-    wheelChild = Instantiate(wheelPrefab, transform.position + wheelRestOffset, wheelRotation, transform);
+    // transform.position += wheelRestOffset;
+
+    // wheelChild = Instantiate(wheelPrefab, transform.position + wheelRestOffset, wheelRotation, transform);
+  }
+
+  void Update() {
+    GetWheelData();
+  }
+
+  void GetWheelData() {
+    grounded = false;
+    Vector3 tirePosition = transform.position;
+    // Vector3 tirePosition = wheelPrefab.transform.position;
+    wheelBelowCenter = transform.root.position.y > tirePosition.y;
+
+    Debug.DrawRay(tirePosition, -transform.up * hoverHeight, Color.red);
+    bool rayHits = Physics.RaycastNonAlloc(tirePosition, -transform.up, wheelHits, hoverHeight, GameUtilities.instance.staticLayer) > 0;
+    if (rayHits) {
+      foreach (RaycastHit wheelHit in wheelHits) {
+        grounded = true;
+        groundNormal = wheelHit.normal;
+
+        // calculate forces
+        distancePercent = (1.0f - (wheelHit.distance / hoverHeight));
+        wheelForce = transform.up * hoverForce * distancePercent;
+
+        // how far is wheel from the ground
+        wheelGroundedOffset = -transform.up * (wheelHit.distance - wheelRadiusY);
+      }
+    }
+    else {
+      // might need to change this to Vector3.zero at some point
+      groundNormal = Vector3.up;
+
+      // Self levelling - returns the vehicle to horizontal when not grounded and simulates gravity
+      if (wheelBelowCenter) {
+        // Push it up (add balance)
+        wheelForce = transform.up * vehicleMovement.gravityForce;
+      }
+      else {
+        // Pull it down (apply gravity)
+        wheelForce = -transform.up * vehicleMovement.gravityForce;
+      }
+    }
+
+    if (!grounded) {
+      Debug.Log("not grounded! " + tirePosition);
+    }
   }
 }
