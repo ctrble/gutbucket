@@ -27,7 +27,7 @@ public class VehicleWheel : MonoBehaviour {
   [Header("Settings")]
 
   public bool steering = false;
-  private bool wheelBelowCenter;
+  private bool vehicleIsFlipped;
   public float skinWidth;
   public float wheelRadiusX;
   public float wheelRadiusY;
@@ -105,11 +105,10 @@ public class VehicleWheel : MonoBehaviour {
 
   void GetWheelData() {
     grounded = false;
-    Vector3 tirePosition = transform.position;
-    wheelBelowCenter = transform.root.position.y > tirePosition.y;
 
-    Debug.DrawRay(tirePosition, -transform.up * hoverHeight, Color.red);
-    bool rayHits = Physics.RaycastNonAlloc(tirePosition, -transform.up, wheelHits, hoverHeight, GameUtilities.instance.staticLayer) > 0;
+    // check from the top of the collider (this position) down to the ground
+    // Debug.DrawRay(transform.position, -transform.up * hoverHeight, Color.red);
+    bool rayHits = Physics.RaycastNonAlloc(transform.position, -transform.up, wheelHits, hoverHeight, GameUtilities.instance.staticLayer) > 0;
     if (rayHits) {
       foreach (RaycastHit wheelHit in wheelHits) {
         grounded = true;
@@ -120,7 +119,7 @@ public class VehicleWheel : MonoBehaviour {
         wheelForce = transform.up * hoverForce * distancePercent;
 
         // get where the wheel will rest on the ground
-        wheelGroundedPosition = transform.position + transform.InverseTransformPoint(wheelHit.point);
+        wheelGroundedPosition = transform.localPosition + transform.InverseTransformPoint(wheelHit.point);
       }
     }
     else {
@@ -128,7 +127,8 @@ public class VehicleWheel : MonoBehaviour {
       groundNormal = Vector3.up;
 
       // Self levelling - returns the vehicle to horizontal when not grounded and simulates gravity
-      if (wheelBelowCenter) {
+      vehicleIsFlipped = transform.parent.position.y > wheelChild.transform.position.y;
+      if (vehicleIsFlipped) {
         // Push it up (add balance)
         wheelForce = transform.up * vehicleMovement.gravityForce;
       }
@@ -150,19 +150,18 @@ public class VehicleWheel : MonoBehaviour {
   }
 
   void LateUpdate() {
-    ClampWheelPosition();
+    WheelSuspension();
   }
 
-  void ClampWheelPosition() {
+  void WheelSuspension() {
     Vector3 newWheelPosition = grounded ? wheelGroundedPosition : wheelLowestPosition;
 
     // smooth out the new position
-    Vector3 lerpedOffset = Vector3.Lerp(wheelChild.transform.localPosition, newWheelPosition, 0.25f);
-    wheelChild.transform.localPosition = lerpedOffset;
+    wheelChild.transform.localPosition = Vector3.Lerp(wheelChild.transform.localPosition, newWheelPosition, 0.25f);
 
     // only move up and down, dammit, and don't go too high
     Vector3 localPosition = wheelChild.transform.localPosition;
-    float resetY = Mathf.Clamp(localPosition.y, newWheelPosition.y, wheelHighestPosition.y);
-    wheelChild.transform.localPosition = new Vector3(0, Mathf.Lerp(localPosition.y, resetY, 0.5f), 0);
+    float resetY = Mathf.Clamp(localPosition.y, wheelLowestPosition.y, wheelHighestPosition.y);
+    wheelChild.transform.localPosition = new Vector3(0, Mathf.Lerp(localPosition.y, resetY, 0.75f), 0);
   }
 }
