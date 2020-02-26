@@ -161,7 +161,12 @@ public class VehicleWheel : MonoBehaviour {
 
     // only move up and down, dammit, and don't go too high
     Vector3 localPosition = wheelChild.transform.localPosition;
-    float resetY = Mathf.Clamp(localPosition.y, wheelLowestPosition.y, wheelHighestPosition.y);
+
+    // but also don't go too low
+    float groundOrLow = (wheelLowestPosition.y > wheelGroundedPosition.y) ? wheelLowestPosition.y : wheelGroundedPosition.y;
+
+    // apply the adjustments in wheel Y position while zeroing out other movement
+    float resetY = Mathf.Clamp(localPosition.y, groundOrLow, wheelHighestPosition.y);
     wheelChild.transform.localPosition = new Vector3(0, Mathf.Lerp(localPosition.y, resetY, 0.75f), 0);
   }
 }
