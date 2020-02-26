@@ -26,13 +26,13 @@ public class IdleVehicle : MonoBehaviour {
 
   public void ExitState(string nextState) {
     idling = false;
-    // vehicleMovement.SetState(nextState);
+    vehicleMovement.SetState(nextState);
   }
 
   void Update() {
     if (idling) {
       // possible transitions
-      ListenForChange();
+      // ListenForChange();
     }
   }
 
@@ -79,22 +79,22 @@ public class IdleVehicle : MonoBehaviour {
   }
 
   void Idle() {
-    // vehicleMovement.TrackCurrentSpeed();
+    vehicleMovement.TrackCurrentSpeed();
 
-    // Turn();
+    Turn();
 
     // balance
-    // if (Mathf.Abs(vehicleMovement.currentZAngle) >= 5f) {
-    //   vehicleMovement.CounterRoll(5f);
-    // }
+    if (Mathf.Abs(vehicleMovement.currentZAngle) >= 5f) {
+      vehicleMovement.CounterRoll(5f);
+    }
   }
 
-  // void Turn() {
-  //   Vector3 wheelForward = vehicleMovement.AverageWheelDirection();
-  //   Vector3 currentVector = vehicleMovement.reverse ? wheelForward : transform.forward;
-  //   Vector3 targetVector = vehicleMovement.reverse ? transform.forward : wheelForward;
-  //   float torquePower = Mathf.Clamp(vehicleMovement.currentSpeed * 0.1f, 0, vehicleData.turnRadius * 0.5f);
+  void Turn() {
+    Vector3 wheelForward = vehicleMovement.AverageWheelDirection();
+    Vector3 currentVector = vehicleMovement.reverse ? wheelForward : transform.forward;
+    Vector3 targetVector = vehicleMovement.reverse ? transform.forward : wheelForward;
+    float torquePower = Mathf.Clamp(vehicleMovement.currentSpeed * 0.1f, 0, vehicleData.turnRadius * 0.5f);
 
-  //   vehicleMovement.AddVehicleTorque(currentVector, targetVector, torquePower);
-  // }
+    vehicleMovement.AddVehicleTorque(currentVector, targetVector, torquePower);
+  }
 }

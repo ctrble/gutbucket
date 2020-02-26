@@ -58,6 +58,10 @@ public class VehicleWheel : MonoBehaviour {
       vehicleMovement = gameObject.GetComponentInParent<VehicleMovement>();
     }
 
+    SetUpWheels();
+  }
+
+  void SetUpWheels() {
     // bit of wiggle room
     skinWidth = vehicleCollider.radius * (vehicleCollider.radius * 0.2f);
 
@@ -75,10 +79,6 @@ public class VehicleWheel : MonoBehaviour {
     initialWheelCenter = wheelBounds.center;
     initialWheelPosition = wheelModel.transform.position;
 
-    SetUpWheels();
-  }
-
-  void SetUpWheels() {
     // place this the wheel is
     transform.position = initialWheelCenter;
 
@@ -90,7 +90,6 @@ public class VehicleWheel : MonoBehaviour {
     // reparent the wheel model to the wheel child
     wheelChild = transform.GetChild(0).gameObject;
     wheelModel.transform.parent = wheelChild.transform;
-
 
     // figure out mins and maxes of child positioning
     Vector3 wheelChildPosition = wheelChild.transform.localPosition;
