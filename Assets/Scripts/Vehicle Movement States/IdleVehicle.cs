@@ -32,7 +32,7 @@ public class IdleVehicle : MonoBehaviour {
   void Update() {
     if (idling) {
       // possible transitions
-      // ListenForChange();
+      ListenForChange();
     }
   }
 

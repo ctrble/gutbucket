@@ -66,24 +66,24 @@ public class VehicleMovement : MonoBehaviour {
 
   public void ChangeState() {
     switch (currentState) {
-      // case MovementState.Airborne:
-      //   airborneState.EnterState();
-      //   break;
-      // case MovementState.Tilt:
-      //   tiltState.EnterState();
-      //   break;
-      // case MovementState.Idle:
-      //   idleState.EnterState();
-      //   break;
-      // case MovementState.Drive:
-      //   driveState.EnterState();
-      //   break;
-      // case MovementState.Brake:
-      //   brakeState.EnterState();
-      //   break;
-      // case MovementState.Skid:
-      //   skidState.EnterState();
-      //   break;
+      case MovementState.Airborne:
+        airborneState.EnterState();
+        break;
+      case MovementState.Tilt:
+        tiltState.EnterState();
+        break;
+      case MovementState.Idle:
+        idleState.EnterState();
+        break;
+      case MovementState.Drive:
+        driveState.EnterState();
+        break;
+      case MovementState.Brake:
+        brakeState.EnterState();
+        break;
+      case MovementState.Skid:
+        skidState.EnterState();
+        break;
       default:
         idleState.EnterState();
         break;
