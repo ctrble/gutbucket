@@ -43,6 +43,7 @@ public class VehicleWheel : MonoBehaviour {
   [SerializeField]
   private Vector3 wheelLowestPosition;
   private float distancePercent;
+  public Bounds wheelBounds;
 
   void Start() {
     if (vehicleRB == null) {
@@ -71,7 +72,7 @@ public class VehicleWheel : MonoBehaviour {
     grounded = false;
 
     // how big is this thing?
-    Bounds wheelBounds = wheelModel.GetComponent<MeshRenderer>().bounds;
+    wheelBounds = wheelModel.GetComponent<MeshRenderer>().bounds;
     wheelRadiusX = wheelBounds.extents.x;
     wheelRadiusY = wheelBounds.extents.y;
 

@@ -100,11 +100,14 @@ public class SkidVehicle : MonoBehaviour {
     float skidForce = vehicleData.handling;
     foreach (VehicleWheel wheel in vehicleMovement.wheelControllers) {
       if (!wheel.steering) {
-        Vector3 skidDirection = -wheel.wheelChild.transform.right * vehicleMovement.SteerDirection() * flip;
-        // Vector3 skidPosition = wheel.wheelChild.transform.position + vehicleMovement.vehicleRB.centerOfMass;
-        Vector3 skidPosition = wheel.wheelChild.transform.position;
-        // Vector3 skidDirection = -wheel.transform.right * vehicleMovement.SteerDirection() * flip;
-        // Vector3 skidPosition = wheel.transform.position + vehicleMovement.vehicleRB.centerOfMass;
+        Transform wheelPosition = wheel.wheelModel.transform;
+        Vector3 direction = -wheelPosition.right * vehicleMovement.SteerDirection() * flip;
+
+        // along the plane
+        Vector3 projected = Vector3.ProjectOnPlane(direction, wheel.groundNormal);
+        Vector3 skidDirection = projected;
+
+        Vector3 skidPosition = wheelPosition.position;
 
         Debug.DrawRay(skidPosition, skidDirection * skidForce, Color.blue);
         vehicleMovement.vehicleRB.AddForceAtPosition(skidDirection * skidForce, skidPosition);
