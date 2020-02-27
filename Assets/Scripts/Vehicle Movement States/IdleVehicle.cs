@@ -70,7 +70,6 @@ public class IdleVehicle : MonoBehaviour {
   }
 
   void RigidbodyInit() {
-    Debug.Log("i'm initting");
     vehicleMovement.vehicleRB.mass = vehicleData.weight;
     vehicleMovement.vehicleRB.drag = 1.5f;
     vehicleMovement.vehicleRB.angularDrag = 4f;

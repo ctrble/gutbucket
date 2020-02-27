@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
   public static GameController instance = null;
-
   public GameObject playerPrefab;
+  public GameObject player;
+
 
   void Awake() {
     CreateSingleton();
@@ -22,7 +23,11 @@ public class GameController : MonoBehaviour {
 
   void OnEnable() {
     if (!GameObject.FindWithTag("Player")) {
-      GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+      Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+    }
+
+    if (player == null) {
+      player = GameObject.FindGameObjectWithTag("Player");
     }
   }
 }

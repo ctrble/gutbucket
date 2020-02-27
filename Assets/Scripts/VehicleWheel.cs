@@ -107,7 +107,6 @@ public class VehicleWheel : MonoBehaviour {
     grounded = false;
 
     // check from the top of the collider (this position) down to the ground
-    // Debug.DrawRay(transform.position, -transform.up * hoverHeight, Color.red);
     bool rayHits = Physics.RaycastNonAlloc(transform.position, -transform.up, wheelHits, hoverHeight, GameUtilities.instance.staticLayer) > 0;
     if (rayHits) {
       foreach (RaycastHit wheelHit in wheelHits) {

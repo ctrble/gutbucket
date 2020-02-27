@@ -106,10 +106,8 @@ public class SkidVehicle : MonoBehaviour {
         // along the plane
         Vector3 projected = Vector3.ProjectOnPlane(direction, wheel.groundNormal);
         Vector3 skidDirection = projected;
-
         Vector3 skidPosition = wheelPosition.position;
 
-        Debug.DrawRay(skidPosition, skidDirection * skidForce, Color.blue);
         vehicleMovement.vehicleRB.AddForceAtPosition(skidDirection * skidForce, skidPosition);
       }
     }
