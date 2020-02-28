@@ -57,4 +57,8 @@ public class InputController : MonoBehaviour {
   public Vector3 AimDelta() {
     return new Vector3(player.GetAxisDelta("Aim_Horizontal"), 0, player.GetAxisDelta("Aim_Vertical"));
   }
+
+  public bool ChangeCamera() {
+    return player.GetButtonDown("Change Camera");
+  }
 }
