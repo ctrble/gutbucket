@@ -7,6 +7,8 @@ public class GameController : MonoBehaviour {
   public GameObject playerPrefab;
   public List<GameObject> allPlayers = new List<GameObject>();
   public int playerCount = 1;
+  public LayerMask p1Layer;
+  public LayerMask p2Layer;
 
   void Awake() {
     CreateSingleton();
@@ -33,6 +35,8 @@ public class GameController : MonoBehaviour {
         GameObject[] currentPlayers = GameObject.FindGameObjectsWithTag("Player");
         allPlayers.Add(currentPlayers[0]);
       }
+
+      allPlayers[0].layer = p1Layer;
     }
     else if (playerCount > 1) {
       GameObject[] currentPlayers = GameObject.FindGameObjectsWithTag("Player");
@@ -60,6 +64,10 @@ public class GameController : MonoBehaviour {
       foreach (GameObject player in currentPlayers) {
         allPlayers.Add(player);
       }
+
+      // set layers for the players (used for cameras)
+      allPlayers[0].layer = LayerMask.NameToLayer("P1");
+      allPlayers[1].layer = LayerMask.NameToLayer("P2");
     }
   }
 }

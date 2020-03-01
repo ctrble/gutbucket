@@ -7,9 +7,11 @@ public class CameraController : MonoBehaviour {
   public Camera mainCamera;
   public Transform currentCamera;
   public List<CinemachineVirtualCamera> allCameras = new List<CinemachineVirtualCamera>();
+  public GameObject closeCameraPrefab;
+  public GameObject midCameraPrefab;
+  public GameObject farCameraPrefab;
   public int currentCameraIndex;
   public InputController inputController;
-
 
   void Awake() {
     CreateSingleton();
@@ -33,11 +35,52 @@ public class CameraController : MonoBehaviour {
     // this might need some help
     // if only one player...
     if (GameController.instance.playerCount == 1) {
-      // inputController = GameController.instance.player.GetComponent<InputController>();
       inputController = GameController.instance.allPlayers[0].GetComponent<InputController>();
     }
     else {
-      // figure out multi player cams
+      // TODO: well this is a hot mess
+      // clone the camera
+      GameObject secondCameraObject = Instantiate(mainCamera.gameObject, mainCamera.transform.position, mainCamera.transform.rotation);
+      AudioListener cameraAudio = secondCameraObject.GetComponent<AudioListener>();
+      cameraAudio.enabled = false;
+      Camera cameraComponent = secondCameraObject.GetComponent<Camera>();
+
+      // position x y, size x y for split screen
+      mainCamera.rect = new Rect(0, 0.5f, 1, 1);
+      cameraComponent.rect = new Rect(0, 0, 1, 0.5f);
+
+      // the layers to exclude
+      int p1Layer = LayerMask.NameToLayer("P1");
+      int p2Layer = LayerMask.NameToLayer("P2");
+
+      // current culling masks
+      int currentP1Mask = mainCamera.cullingMask;
+      int currentP2Mask = cameraComponent.cullingMask;
+
+      // new culling masks
+      int newP1Mask = currentP1Mask & ~(1 << p2Layer);
+      int newP2Mask = currentP1Mask & ~(1 << p1Layer);
+
+      // set them
+      mainCamera.cullingMask = newP1Mask;
+      cameraComponent.cullingMask = newP2Mask;
+
+      // spawn vCams for the second player
+      GameObject closeCamera = Instantiate(closeCameraPrefab, transform.position, Quaternion.identity, transform);
+      GameObject midCamera = Instantiate(midCameraPrefab, transform.position, Quaternion.identity, transform);
+      GameObject farCamera = Instantiate(farCameraPrefab, transform.position, Quaternion.identity, transform);
+
+      closeCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = GameController.instance.allPlayers[1].transform;
+      midCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = GameController.instance.allPlayers[1].transform;
+      farCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = GameController.instance.allPlayers[1].transform;
+
+      closeCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = GameController.instance.allPlayers[1].transform;
+      midCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = GameController.instance.allPlayers[1].transform;
+      farCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = GameController.instance.allPlayers[1].transform;
+
+      closeCamera.gameObject.layer = p2Layer;
+      midCamera.gameObject.layer = p2Layer;
+      farCamera.gameObject.layer = p2Layer;
     }
   }
 
