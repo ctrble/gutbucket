@@ -45,7 +45,7 @@ public class VehicleWheel : MonoBehaviour {
   private float distancePercent;
   public Bounds wheelBounds;
 
-  void Start() {
+  void OnEnable() {
     if (vehicleRB == null) {
       vehicleRB = gameObject.GetComponentInParent<Rigidbody>();
     }

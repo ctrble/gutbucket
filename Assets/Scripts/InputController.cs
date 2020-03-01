@@ -8,7 +8,7 @@ public class InputController : MonoBehaviour {
   private Player player; // The Rewired Player
   private float deadZone = 0.071f;
 
-  void Awake() {
+  void Start() {
     player = ReInput.players.GetPlayer(playerId);
   }
 

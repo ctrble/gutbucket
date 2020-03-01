@@ -3,17 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 public class CameraController : MonoBehaviour {
+  public static CameraController instance = null;
   public Camera mainCamera;
   public Transform currentCamera;
   public List<CinemachineVirtualCamera> allCameras = new List<CinemachineVirtualCamera>();
   public int currentCameraIndex;
   public InputController inputController;
 
+
   void Awake() {
+    CreateSingleton();
+  }
+
+  void CreateSingleton() {
+    if (instance == null)
+      instance = this;
+    else if (instance != this)
+      Destroy(gameObject);
+
+    DontDestroyOnLoad(gameObject);
+  }
+
+  void Start() {
     if (mainCamera == null) {
       mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
     currentCamera = mainCamera.transform;
+
+    // this might need some help
+    // if only one player...
+    if (GameController.instance.playerCount == 1) {
+      // inputController = GameController.instance.player.GetComponent<InputController>();
+      inputController = GameController.instance.allPlayers[0].GetComponent<InputController>();
+    }
+    else {
+      // figure out multi player cams
+    }
   }
 
   void CamerasInit() {
@@ -32,13 +57,11 @@ public class CameraController : MonoBehaviour {
     currentCameraIndex = allCameras.Count - 1;
   }
 
-  void Start() {
-    inputController = GameController.instance.player.GetComponent<InputController>();
-  }
-
   void Update() {
-    if (inputController.ChangeCamera()) {
-      EnableNextCamera();
+    if (GameController.instance.playerCount == 1) {
+      if (inputController.ChangeCamera()) {
+        EnableNextCamera();
+      }
     }
   }
 

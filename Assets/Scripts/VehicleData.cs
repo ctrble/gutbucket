@@ -15,7 +15,7 @@ public class VehicleData : MonoBehaviour {
   public float maxClimbAngle = 40f;
   public Transform centerOfMass;
 
-  void Awake() {
+  void OnEnable() {
     // TODO: update this later so it's a pickup or something
     RemainingBoost = boostCapacity;
 

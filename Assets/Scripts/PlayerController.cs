@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
   public Rigidbody playerRB;
 
-  void Start() {
+  void OnEnable() {
     if (playerRB == null) {
       playerRB = gameObject.GetComponent<Rigidbody>();
     }
