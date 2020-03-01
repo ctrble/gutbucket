@@ -5,13 +5,14 @@ using Cinemachine;
 public class CameraController : MonoBehaviour {
   public static CameraController instance = null;
   public Camera mainCamera;
+  public Camera secondaryCamera;
   public Transform currentCamera;
   public List<CinemachineVirtualCamera> allCameras = new List<CinemachineVirtualCamera>();
   public GameObject closeCameraPrefab;
   public GameObject midCameraPrefab;
   public GameObject farCameraPrefab;
   public int currentCameraIndex;
-  public InputController inputController;
+  public List<InputController> inputControllers = new List<InputController>();
 
   void Awake() {
     CreateSingleton();
@@ -27,61 +28,85 @@ public class CameraController : MonoBehaviour {
   }
 
   void Start() {
+    // get the basic camera info
     if (mainCamera == null) {
       mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
     currentCamera = mainCamera.transform;
 
-    // this might need some help
-    // if only one player...
     if (GameController.instance.playerCount == 1) {
-      inputController = GameController.instance.allPlayers[0].GetComponent<InputController>();
+      // get the first player's controller, that's all folks!
+      inputControllers.Add(GameController.instance.allPlayers[0].GetComponent<InputController>());
     }
     else {
-      // TODO: well this is a hot mess
-      // clone the camera
-      GameObject secondCameraObject = Instantiate(mainCamera.gameObject, mainCamera.transform.position, mainCamera.transform.rotation);
-      AudioListener cameraAudio = secondCameraObject.GetComponent<AudioListener>();
-      cameraAudio.enabled = false;
-      Camera cameraComponent = secondCameraObject.GetComponent<Camera>();
-
-      // position x y, size x y for split screen
-      mainCamera.rect = new Rect(0, 0.5f, 1, 1);
-      cameraComponent.rect = new Rect(0, 0, 1, 0.5f);
-
-      // the layers to exclude
-      int p1Layer = LayerMask.NameToLayer("P1");
-      int p2Layer = LayerMask.NameToLayer("P2");
-
-      // current culling masks
-      int currentP1Mask = mainCamera.cullingMask;
-      int currentP2Mask = cameraComponent.cullingMask;
-
-      // new culling masks
-      int newP1Mask = currentP1Mask & ~(1 << p2Layer);
-      int newP2Mask = currentP1Mask & ~(1 << p1Layer);
-
-      // set them
-      mainCamera.cullingMask = newP1Mask;
-      cameraComponent.cullingMask = newP2Mask;
-
-      // spawn vCams for the second player
-      GameObject closeCamera = Instantiate(closeCameraPrefab, transform.position, Quaternion.identity, transform);
-      GameObject midCamera = Instantiate(midCameraPrefab, transform.position, Quaternion.identity, transform);
-      GameObject farCamera = Instantiate(farCameraPrefab, transform.position, Quaternion.identity, transform);
-
-      closeCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = GameController.instance.allPlayers[1].transform;
-      midCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = GameController.instance.allPlayers[1].transform;
-      farCamera.GetComponent<CinemachineVirtualCamera>().m_Follow = GameController.instance.allPlayers[1].transform;
-
-      closeCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = GameController.instance.allPlayers[1].transform;
-      midCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = GameController.instance.allPlayers[1].transform;
-      farCamera.GetComponent<CinemachineVirtualCamera>().m_LookAt = GameController.instance.allPlayers[1].transform;
-
-      closeCamera.gameObject.layer = p2Layer;
-      midCamera.gameObject.layer = p2Layer;
-      farCamera.gameObject.layer = p2Layer;
+      SetUpSplitScreen();
     }
+  }
+
+  void CloneMainCamera() {
+    // clone the camera, set as secondary
+    GameObject secondCameraObject = Instantiate(mainCamera.gameObject, mainCamera.transform.position, mainCamera.transform.rotation);
+    secondaryCamera = secondCameraObject.GetComponent<Camera>();
+
+    // there can only be one audio listener, disable it
+    AudioListener cameraAudio = secondCameraObject.GetComponent<AudioListener>();
+    cameraAudio.enabled = false;
+  }
+
+  void ResizeViewPorts() {
+    // position x y, size x y for split screen
+    mainCamera.rect = new Rect(0, 0.5f, 1, 0.5f);
+    secondaryCamera.rect = new Rect(0, 0, 1, 0.5f);
+  }
+
+  void SetCullingMasks(int p1Layer, int p2Layer) {
+    // current culling masks
+    int currentP1Mask = mainCamera.cullingMask;
+    int currentP2Mask = secondaryCamera.cullingMask;
+
+    // new culling masks
+    int newP1Mask = currentP1Mask & ~(1 << p2Layer);
+    int newP2Mask = currentP1Mask & ~(1 << p1Layer);
+
+    // set the layers on the cameras and players
+    mainCamera.cullingMask = newP1Mask;
+    secondaryCamera.cullingMask = newP2Mask;
+  }
+
+  void SetLayerMasks(int p1Layer, int p2Layer) {
+    GameController.instance.allPlayers[0].layer = p1Layer;
+    GameController.instance.allPlayers[1].layer = p2Layer;
+  }
+
+  void SpawnPlayer2Vcam(GameObject cameraPrefab, int p2Layer) {
+    GameObject newCamera = Instantiate(cameraPrefab, transform.position, Quaternion.identity, transform);
+    CinemachineVirtualCamera newVCam = newCamera.GetComponent<CinemachineVirtualCamera>();
+
+    // track the player
+    newVCam.m_Follow = GameController.instance.allPlayers[1].transform;
+    newVCam.m_LookAt = GameController.instance.allPlayers[1].transform;
+    newCamera.gameObject.layer = p2Layer;
+  }
+
+  void GetAllInputs() {
+    inputControllers.Add(GameController.instance.allPlayers[0].GetComponent<InputController>());
+    inputControllers.Add(GameController.instance.allPlayers[1].GetComponent<InputController>());
+  }
+
+  void SetUpSplitScreen() {
+    int p1Layer = LayerMask.NameToLayer("P1");
+    int p2Layer = LayerMask.NameToLayer("P2");
+
+    CloneMainCamera();
+    ResizeViewPorts();
+    SetCullingMasks(p1Layer, p2Layer);
+    SetLayerMasks(p1Layer, p2Layer);
+
+    SpawnPlayer2Vcam(closeCameraPrefab, p2Layer);
+    SpawnPlayer2Vcam(midCameraPrefab, p2Layer);
+    SpawnPlayer2Vcam(farCameraPrefab, p2Layer);
+
+    GetAllInputs();
   }
 
   void CamerasInit() {
@@ -102,7 +127,7 @@ public class CameraController : MonoBehaviour {
 
   void Update() {
     if (GameController.instance.playerCount == 1) {
-      if (inputController.ChangeCamera()) {
+      if (inputControllers[0].ChangeCamera()) {
         EnableNextCamera();
       }
     }

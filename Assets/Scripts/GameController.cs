@@ -7,8 +7,8 @@ public class GameController : MonoBehaviour {
   public GameObject playerPrefab;
   public List<GameObject> allPlayers = new List<GameObject>();
   public int playerCount = 1;
-  public LayerMask p1Layer;
-  public LayerMask p2Layer;
+  private Vector3 player1SpawnPosition = Vector3.zero;
+  private Vector3 player2SpawnPosition = Vector3.right * 2;
 
   void Awake() {
     CreateSingleton();
@@ -24,50 +24,43 @@ public class GameController : MonoBehaviour {
   }
 
   void OnEnable() {
-    if (playerCount == 1) {
-      // there's not a player yet, spawn one
-      if (!GameObject.FindWithTag("Player")) {
-        Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
-      }
+    SpawnPlayers();
+  }
 
-      // add the player to the players list
-      if (allPlayers.Count == 0) {
-        GameObject[] currentPlayers = GameObject.FindGameObjectsWithTag("Player");
-        allPlayers.Add(currentPlayers[0]);
-      }
+  void SpawnPlayers() {
+    GameObject[] spawnedPlayers = GameObject.FindGameObjectsWithTag("Player");
+    int playersToSpawn = playerCount - spawnedPlayers.Length;
 
-      allPlayers[0].layer = LayerMask.NameToLayer("P1");
+    if (playersToSpawn == 0) {
+      // we've got everyone, huzzah and add them to the players list
+      allPlayers.Add(spawnedPlayers[0]);
     }
-    else if (playerCount > 1) {
-      GameObject[] currentPlayers = GameObject.FindGameObjectsWithTag("Player");
-
-      // how many more do we need?
-      int playersToSpawn = playerCount - currentPlayers.Length;
-      if (playersToSpawn == 0) {
-        Debug.Log("no need to spawn");
+    else if (playersToSpawn == 1) {
+      if (playerCount == 1) {
+        // it's a one player game and we don't even have our player!
+        GameObject player1 = Instantiate(playerPrefab, player1SpawnPosition, Quaternion.identity);
+        allPlayers.Add(player1);
       }
-      else if (playersToSpawn > 0) {
-        Debug.Log($"need {playersToSpawn} more players");
+      else {
+        // we've got the first one, add them to the list
+        allPlayers.Add(spawnedPlayers[0]);
 
-        for (int i = 1; i <= playersToSpawn; i++) {
-          // make another player
-          Vector3 spawnPosition = (playersToSpawn % 2 == 0) ? Vector3.right * (i + 1) : Vector3.left * (i + 1);
-          GameObject player = Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
-
-          // set the player #
-          player.GetComponent<InputController>().playerId = i;
-        }
+        // but we still need a second player
+        GameObject player2 = Instantiate(playerPrefab, player2SpawnPosition, Quaternion.identity);
+        allPlayers.Add(player2);
       }
+    }
+    else if (playersToSpawn == 2) {
+      // need both players
+      GameObject player1 = Instantiate(playerPrefab, player1SpawnPosition, Quaternion.identity);
+      GameObject player2 = Instantiate(playerPrefab, player2SpawnPosition, Quaternion.identity);
+      allPlayers.Add(player1);
+      allPlayers.Add(player2);
+    }
 
-      // update our lists of players
-      currentPlayers = GameObject.FindGameObjectsWithTag("Player");
-      foreach (GameObject player in currentPlayers) {
-        allPlayers.Add(player);
-      }
-
-      // set layers for the players (used for cameras)
-      allPlayers[0].layer = LayerMask.NameToLayer("P1");
-      allPlayers[1].layer = LayerMask.NameToLayer("P2");
+    if (allPlayers.Count == 2) {
+      // need to tell player 2 to use the right inputs, because only player 1 knows any better
+      allPlayers[1].GetComponent<InputController>().playerId = 1;
     }
   }
 }
