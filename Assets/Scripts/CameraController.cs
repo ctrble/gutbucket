@@ -14,19 +14,21 @@ public class CameraController : MonoBehaviour {
       mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
     currentCamera = mainCamera.transform;
+  }
 
+  void CamerasInit() {
+    // gather all of them
     if (allCameras.Count == 0) {
       foreach (Transform child in transform) {
         allCameras.Add(child.GetComponent<CinemachineVirtualCamera>());
       }
     }
 
+    // turn on, set priority by hierarchy
     for (int i = 0; i < allCameras.Count; i++) {
       allCameras[i].gameObject.SetActive(true);
-      // if (allCameras[i])
       allCameras[i].m_Priority = i;
     }
-    // the last in the list has the highest priority on init
     currentCameraIndex = allCameras.Count - 1;
   }
 
@@ -35,7 +37,7 @@ public class CameraController : MonoBehaviour {
   }
 
   void Update() {
-    if (inputController.ChangeCamera() || Input.GetKeyDown("c")) {
+    if (inputController.ChangeCamera()) {
       EnableNextCamera();
     }
   }
