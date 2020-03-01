@@ -5,7 +5,6 @@ using Cinemachine;
 public class CameraController : MonoBehaviour {
   public Camera mainCamera;
   public Transform currentCamera;
-  // public List<Transform> allCameras = new List<Transform>();
   public List<CinemachineVirtualCamera> allCameras = new List<CinemachineVirtualCamera>();
   public int currentCameraIndex;
   public InputController inputController;
@@ -23,12 +22,11 @@ public class CameraController : MonoBehaviour {
     }
 
     for (int i = 0; i < allCameras.Count; i++) {
-      // allCameras[i].gameObject.SetActive(i == 0);
       allCameras[i].gameObject.SetActive(true);
       // if (allCameras[i])
       allCameras[i].m_Priority = i;
     }
-    // the last in the list has the highest priority to start
+    // the last in the list has the highest priority on init
     currentCameraIndex = allCameras.Count - 1;
   }
 
@@ -43,7 +41,6 @@ public class CameraController : MonoBehaviour {
   }
 
   void EnableNextCamera() {
-    Debug.Log("changing camera");
     int nextIndex = (currentCameraIndex + 1 == allCameras.Count) ? 0 : currentCameraIndex + 1;
     currentCameraIndex = nextIndex;
     for (int i = 0; i < allCameras.Count; i++) {
@@ -52,17 +49,7 @@ public class CameraController : MonoBehaviour {
       }
       else {
         allCameras[i].m_Priority = 0;
-        // allCameras[i].m_Priority = currentCameraIndex - i;
       }
-
-      // if (allCameras[i].gameObject.activeInHierarchy) {
-      // // turn off the current camera
-      // allCameras[i].gameObject.SetActive(false);
-      // // turn on the next one
-      // int next = (i + 1 == allCameras.Count) ? 0 : i + 1;
-      // allCameras[next].gameObject.SetActive(true);
-      // break;
-      // }
     }
   }
 }
