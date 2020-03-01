@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour {
         allPlayers.Add(currentPlayers[0]);
       }
 
-      allPlayers[0].layer = p1Layer;
+      allPlayers[0].layer = LayerMask.NameToLayer("P1");
     }
     else if (playerCount > 1) {
       GameObject[] currentPlayers = GameObject.FindGameObjectsWithTag("Player");
