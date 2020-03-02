@@ -6,13 +6,12 @@ public class CameraController : MonoBehaviour {
   public static CameraController instance = null;
   public Camera mainCamera;
   public Camera secondaryCamera;
-  public Transform currentCamera;
-  public List<CinemachineVirtualCamera> player1Cameras = new List<CinemachineVirtualCamera>();
-  public List<CinemachineVirtualCamera> player2Cameras = new List<CinemachineVirtualCamera>();
   public GameObject closeCameraPrefab;
   public GameObject midCameraPrefab;
   public GameObject farCameraPrefab;
-  public int currentCameraIndex;
+  public List<CinemachineVirtualCamera> player1Cameras = new List<CinemachineVirtualCamera>();
+  public List<CinemachineVirtualCamera> player2Cameras = new List<CinemachineVirtualCamera>();
+  public List<int> currentCameraIndexes;
   public List<InputController> inputControllers = new List<InputController>();
 
   void Awake() {
@@ -33,7 +32,6 @@ public class CameraController : MonoBehaviour {
     if (mainCamera == null) {
       mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
-    currentCamera = mainCamera.transform;
 
     // prep for player 1
     foreach (Transform child in transform) {
@@ -41,11 +39,13 @@ public class CameraController : MonoBehaviour {
     }
     TrackPlayer(GameController.instance.allPlayers[0].transform, player1Cameras);
 
+    // prep for player 2
     if (GameController.instance.playerCount > 1) {
       SetUpSplitScreen();
     }
 
     GetAllInputs();
+    CamerasInit();
   }
 
   void SetUpSplitScreen() {
@@ -128,38 +128,47 @@ public class CameraController : MonoBehaviour {
   }
 
   void CamerasInit() {
-    // gather all of them
-    if (player1Cameras.Count == 0) {
-      foreach (Transform child in transform) {
-        player1Cameras.Add(child.GetComponent<CinemachineVirtualCamera>());
-      }
-    }
-
-    // turn on, set priority by hierarchy
+    // turn on for player 1, set priority by hierarchy
     for (int i = 0; i < player1Cameras.Count; i++) {
       player1Cameras[i].gameObject.SetActive(true);
       player1Cameras[i].m_Priority = i;
     }
-    currentCameraIndex = player1Cameras.Count - 1;
-  }
+    currentCameraIndexes.Add(player1Cameras.Count - 1);
 
-  void Update() {
-    if (GameController.instance.playerCount == 1) {
-      if (inputControllers[0].ChangeCamera()) {
-        EnableNextCamera();
+    if (GameController.instance.playerCount > 1) {
+      // turn on for player 2, set priority by hierarchy
+      for (int i = 0; i < player2Cameras.Count; i++) {
+        player2Cameras[i].gameObject.SetActive(true);
+        player2Cameras[i].m_Priority = i;
       }
+
+      currentCameraIndexes.Add(player2Cameras.Count - 1);
     }
   }
 
-  void EnableNextCamera() {
-    int nextIndex = (currentCameraIndex + 1 == player1Cameras.Count) ? 0 : currentCameraIndex + 1;
-    currentCameraIndex = nextIndex;
-    for (int i = 0; i < player1Cameras.Count; i++) {
-      if (i == currentCameraIndex) {
-        player1Cameras[i].m_Priority = player1Cameras.Count - 1;
+  void Update() {
+    if (inputControllers[0].ChangeCamera()) {
+      EnableNextCamera(player1Cameras, 0);
+    }
+
+    if (GameController.instance.playerCount > 1 && inputControllers[1].ChangeCamera()) {
+      EnableNextCamera(player2Cameras, 1);
+    }
+  }
+
+  void EnableNextCamera(List<CinemachineVirtualCamera> cameras, int cameraIndex) {
+    // cycle through the cameras, looping to the beginning if needed
+    int nextIndex = (currentCameraIndexes[cameraIndex] + 1 == cameras.Count) ? 0 : currentCameraIndexes[cameraIndex] + 1;
+    currentCameraIndexes[cameraIndex] = nextIndex;
+
+    for (int i = 0; i < cameras.Count; i++) {
+      if (i == currentCameraIndexes[cameraIndex]) {
+        // set as highest priority
+        cameras[i].m_Priority = cameras.Count - 1;
       }
       else {
-        player1Cameras[i].m_Priority = 0;
+        // reset priority
+        cameras[i].m_Priority = 0;
       }
     }
   }
