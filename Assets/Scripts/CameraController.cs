@@ -13,6 +13,7 @@ public class CameraController : MonoBehaviour {
   public List<CinemachineVirtualCamera> player2Cameras = new List<CinemachineVirtualCamera>();
   public List<int> currentCameraIndexes;
   public List<InputController> inputControllers = new List<InputController>();
+  public bool isVerticalSplit;
 
   void Awake() {
     CreateSingleton();
@@ -77,8 +78,19 @@ public class CameraController : MonoBehaviour {
 
   void ResizeViewPorts() {
     // position x y, size x y for split screen
-    mainCamera.rect = new Rect(0, 0.5f, 1, 0.5f);
-    secondaryCamera.rect = new Rect(0, 0, 1, 0.5f);
+    Rect player1Horizontal = new Rect(0, 0.5f, 1, 0.5f);
+    Rect player2Horizontal = new Rect(0, 0, 1, 0.5f);
+    Rect player1Vertical = new Rect(0, 0, 0.5f, 1);
+    Rect player2Vertical = new Rect(0.5f, 0, 0.5f, 1);
+
+    if (isVerticalSplit) {
+      mainCamera.rect = player1Vertical;
+      secondaryCamera.rect = player2Vertical;
+    }
+    else {
+      mainCamera.rect = player1Horizontal;
+      secondaryCamera.rect = player2Horizontal;
+    }
   }
 
   void SpawnPlayer2Vcam(GameObject cameraPrefab, int p2Layer) {
@@ -151,8 +163,16 @@ public class CameraController : MonoBehaviour {
       EnableNextCamera(player1Cameras, 0);
     }
 
-    if (GameController.instance.playerCount > 1 && inputControllers[1].ChangeCamera()) {
-      EnableNextCamera(player2Cameras, 1);
+    if (GameController.instance.playerCount > 1) {
+      if (inputControllers[1].ChangeCamera()) {
+        EnableNextCamera(player2Cameras, 1);
+      }
+
+      if (inputControllers[0].ToggleSplitScreen() || inputControllers[1].ToggleSplitScreen()) {
+        // change split screen orientation
+        isVerticalSplit = !isVerticalSplit;
+        ResizeViewPorts();
+      }
     }
   }
 

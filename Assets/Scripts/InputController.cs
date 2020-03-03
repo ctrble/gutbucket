@@ -59,6 +59,11 @@ public class InputController : MonoBehaviour {
   }
 
   public bool ChangeCamera() {
-    return player.GetButtonDown("Change Camera");
+    // return player.GetButtonDown("Change Camera");
+    return player.GetButtonSinglePressDown("Change Camera");
+  }
+
+  public bool ToggleSplitScreen() {
+    return player.GetButtonDoublePressDown("Change Camera");
   }
 }
