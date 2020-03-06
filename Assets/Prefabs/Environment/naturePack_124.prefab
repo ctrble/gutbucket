@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 852585283430428753}
-  - component: {fileID: 7538781317157651315}
   m_Layer: 8
   m_Name: naturePack_124
   m_TagString: Untagged
@@ -32,20 +31,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &7538781317157651315
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 852585283430853745}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!1 &852585283430853747
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,6 +42,7 @@ GameObject:
   - component: {fileID: 852585283430428755}
   - component: {fileID: 852585283431755891}
   - component: {fileID: 852585283432854195}
+  - component: {fileID: 4223457596997768296}
   m_Layer: 8
   m_Name: Mesh1_Brown_Cliff_End_Model
   m_TagString: Untagged
@@ -125,3 +111,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &4223457596997768296
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852585283430853747}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 0df0efd9f58acd144b54209561ea2c44, type: 3}
