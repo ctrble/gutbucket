@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: natureKit-stone
+  m_Name: sand
   m_Shader: {fileID: -6465566751694194690, guid: 4aa46d33b0afb5e49bb0703218e42e0e,
     type: 3}
   m_ShaderKeywords: 
@@ -65,10 +65,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_38BD3441: 0.367
-    - Vector1_CF8B0D8D: 3.32
-    - Vector1_ED5ABFD9: 0.015
-    - Vector1_F3F6B787: 0.44
+    - Vector1_38BD3441: 0.652
+    - Vector1_CF8B0D8D: 3.24
+    - Vector1_ED5ABFD9: 0.124
+    - Vector1_F3F6B787: 0.12
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -95,9 +95,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_28180829: {r: 0.13056247, g: 0.16011806, b: 0.16981131, a: 1}
-    - Color_57D43A16: {r: 0.8497241, g: 0.8952866, b: 0.85490197, a: 1}
-    - Color_F689E8B9: {r: 0.6588235, g: 0.8078431, b: 0.827451, a: 1}
+    - Color_28180829: {r: 0.28728822, g: 0.2924528, b: 0.20784314, a: 1}
+    - Color_57D43A16: {r: 0.8962264, g: 0.8885135, b: 0.8497241, a: 1}
+    - Color_F689E8B9: {r: 0.827451, g: 0.7847128, b: 0.65882355, a: 1}
     - _BaseColor: {r: 0.6588235, g: 0.8078431, b: 0.827451, a: 1}
     - _Color: {r: 0.6588235, g: 0.8078431, b: 0.827451, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
