@@ -8,8 +8,7 @@ using UnityEngine.Rendering;
 public class TireSkidController : MonoBehaviour {
   public static TireSkidController instance = null;
 
-  [SerializeField]
-  Material skidmarksMaterial; // Material for the skidmarks to use
+  public Material skidmarksMaterial; // Material for the skidmarks to use
 
   // END INSPECTOR SETTINGS
 

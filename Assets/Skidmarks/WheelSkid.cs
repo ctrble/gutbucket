@@ -9,10 +9,8 @@ public class WheelSkid : MonoBehaviour {
 
   // INSPECTOR SETTINGS
 
-  [SerializeField]
-  Rigidbody rb;
-  [SerializeField]
-  Skidmarks skidmarksController;
+  public Rigidbody rb;
+  public Skidmarks skidmarksController;
 
   // END INSPECTOR SETTINGS
 

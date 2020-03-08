@@ -7,7 +7,7 @@ public class Skidmarks : MonoBehaviour {
   // INSPECTOR SETTINGS
 
   [SerializeField]
-  Material skidmarksMaterial; // Material for the skidmarks to use
+  public Material skidmarksMaterial; // Material for the skidmarks to use
 
   // END INSPECTOR SETTINGS
 

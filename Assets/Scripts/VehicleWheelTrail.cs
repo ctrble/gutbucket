@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Adapted from https://github.com/Nition/UnitySkidmarks
+
 public class VehicleWheelTrail : MonoBehaviour {
   private VehicleWheel vehicleWheel;
   private Rigidbody vehicleRB;
@@ -14,9 +15,9 @@ public class VehicleWheelTrail : MonoBehaviour {
   // Min side slip speed in m/s to start showing a skid
   public float skidFxSpeed = 0.5f;
   // m/s where skid opacity is at full intensity
-  public float maxSkidIntensity = 20.0f;
+  public float maxSkidIntensity = 20f;
   // For wheelspin. Adjust how much skids show
-  public float wheelSlipModifier = 10.0f;
+  public float wheelSlipModifier = 10f;
   // Array index for the skidmarks controller. Index of last skidmark piece this wheel used
   private int lastSkid = -1;
 
