@@ -231,16 +231,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f18150dfb2844e45b12c048a820c703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLineSegmentLength: 1
-  maxLineLength: 20
-  currentLineLength: 1
-  line: {fileID: 0}
-  newPosition: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  vehicleWheel: {fileID: 0}
-  trackPrefab: {fileID: 5961055902599446617, guid: b44df50a08b954842809b2cc13981af9,
-    type: 3}
-  vehicleRB: {fileID: 0}
+  skidFxSpeed: 0.5
+  maxSkidIntensity: 20
+  wheelSlipModifier: 10
 --- !u!1 &4344761887972166931
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,16 +521,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f18150dfb2844e45b12c048a820c703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLineSegmentLength: 1
-  maxLineLength: 20
-  currentLineLength: 1
-  line: {fileID: 0}
-  newPosition: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  vehicleWheel: {fileID: 0}
-  trackPrefab: {fileID: 5961055902599446617, guid: b44df50a08b954842809b2cc13981af9,
-    type: 3}
-  vehicleRB: {fileID: 0}
+  skidFxSpeed: 0.5
+  maxSkidIntensity: 20
+  wheelSlipModifier: 10
 --- !u!1 &8404548110595766000
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,16 +590,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f18150dfb2844e45b12c048a820c703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLineSegmentLength: 1
-  maxLineLength: 20
-  currentLineLength: 1
-  line: {fileID: 0}
-  newPosition: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  vehicleWheel: {fileID: 0}
-  trackPrefab: {fileID: 5961055902599446617, guid: b44df50a08b954842809b2cc13981af9,
-    type: 3}
-  vehicleRB: {fileID: 0}
+  skidFxSpeed: 0.5
+  maxSkidIntensity: 20
+  wheelSlipModifier: 10
 --- !u!1 &8443807969113716918
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,16 +693,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f18150dfb2844e45b12c048a820c703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLineSegmentLength: 1
-  maxLineLength: 20
-  currentLineLength: 1
-  line: {fileID: 0}
-  newPosition: {x: 0, y: 0, z: 0}
-  lastPosition: {x: 0, y: 0, z: 0}
-  vehicleWheel: {fileID: 0}
-  trackPrefab: {fileID: 5961055902599446617, guid: b44df50a08b954842809b2cc13981af9,
-    type: 3}
-  vehicleRB: {fileID: 0}
+  skidFxSpeed: 0.5
+  maxSkidIntensity: 20
+  wheelSlipModifier: 10
 --- !u!1 &8998871042066364156
 GameObject:
   m_ObjectHideFlags: 0
