@@ -2,50 +2,67 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Adapted from https://github.com/Nition/UnitySkidmarks
 public class VehicleWheelTrail : MonoBehaviour {
-  public float maxLineSegmentLength = 1f;
-  public int maxLineLength = 20;
-  [SerializeField]
-  private int currentLineLength = 1;
-  public LineRenderer line;
-  public Vector3 newPosition;
-  public Vector3 lastPosition;
-  public VehicleWheel vehicleWheel;
+  private VehicleWheel vehicleWheel;
+  private Rigidbody vehicleRB;
+  private VehicleMovement vehicleMovement;
+
+  [Space]
+  [Header("Settings")]
+
+  // Min side slip speed in m/s to start showing a skid
+  public float skidFxSpeed = 0.5f;
+  // m/s where skid opacity is at full intensity
+  public float maxSkidIntensity = 20.0f;
+  // For wheelspin. Adjust how much skids show
+  public float wheelSlipModifier = 10.0f;
+  // Array index for the skidmarks controller. Index of last skidmark piece this wheel used
+  private int lastSkid = -1;
 
   void OnEnable() {
     if (vehicleWheel == null) {
       vehicleWheel = GetComponent<VehicleWheel>();
     }
 
-    if (line == null) {
-      line = GetComponent<LineRenderer>();
+    if (vehicleRB == null) {
+      vehicleRB = gameObject.GetComponentInParent<Rigidbody>();
     }
 
-    if (isGrounded()) {
-      lastPosition = vehicleWheel.groundPoint;
-      line.SetPosition(0, lastPosition);
+    if (vehicleMovement == null) {
+      vehicleMovement = gameObject.GetComponentInParent<VehicleMovement>();
     }
-
-    line.positionCount = maxLineLength;
   }
 
-  void Update() {
-    // Get new position.
+  void LateUpdate() {
     if (isGrounded()) {
-      newPosition = vehicleWheel.groundPoint;
+      // Gives velocity with +z being the car's forward axis
+      Vector3 localVelocity = transform.InverseTransformDirection(vehicleRB.velocity);
+      float skidTotal = Mathf.Abs(localVelocity.x);
 
-      // If position is greater than line length create a new line
-      // and set new last position
-      Vector3 distance = lastPosition - newPosition;
-      if (distance.sqrMagnitude > Mathf.Sqrt(maxLineSegmentLength)) {
+      // Check wheel spin as well
+      float wheelAngularVelocity = vehicleWheel.wheelRadiusY * ((2 * Mathf.PI * vehicleMovement.currentSpeed) / 60);
+      float wheelSpin = Mathf.Abs(vehicleMovement.forwardVelocity - wheelAngularVelocity) * wheelSlipModifier;
 
-        line.SetPosition(currentLineLength, newPosition);
-        lastPosition = newPosition;
-        currentLineLength++;
+      // fades out the wheelspin-based skid as speed increases
+      wheelSpin = Mathf.Max(0, wheelSpin * (10 - Mathf.Abs(vehicleMovement.forwardVelocity)));
+
+      skidTotal += wheelSpin;
+
+      // Skid if we should
+      if (skidTotal >= skidFxSpeed) {
+        float intensity = Mathf.Clamp01(skidTotal / maxSkidIntensity);
+        // Account for further movement since the last FixedUpdate
+        Vector3 skidPoint = vehicleWheel.groundPoint + (vehicleRB.velocity * Time.fixedDeltaTime);
+        lastSkid = TireSkidController.instance.AddSkidMark(skidPoint, vehicleWheel.groundNormal, intensity, lastSkid);
       }
-      line.positionCount = currentLineLength + 1;
+      else {
+        lastSkid = -1;
+      }
     }
-
+    else {
+      lastSkid = -1;
+    }
   }
 
   bool isGrounded() {

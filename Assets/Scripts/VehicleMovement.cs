@@ -21,6 +21,7 @@ public class VehicleMovement : MonoBehaviour {
   public bool grounded;
   public int groundedWheels;
   public float currentSpeed;
+  public float forwardVelocity;
   private float tempSpeed;
   private float lastSpeed;
   public float gravityForce;
@@ -196,12 +197,13 @@ public class VehicleMovement : MonoBehaviour {
 
   public void TrackCurrentSpeed() {
     Vector3 direction = reverse ? -transform.forward : transform.forward;
-    float forwardSpeed = Vector3.Dot(vehicleRB.velocity, direction);
-    float smoothedSpeed = Mathf.SmoothDamp(forwardSpeed, lastSpeed, ref tempSpeed, 0.5f);
+    forwardVelocity = Vector3.Dot(vehicleRB.velocity, direction);
+    // float forwardSpeed = Vector3.Dot(vehicleRB.velocity, direction);
+    float smoothedSpeed = Mathf.SmoothDamp(forwardVelocity, lastSpeed, ref tempSpeed, 0.5f);
     currentSpeed = smoothedSpeed;
 
     // cache velocity
-    lastSpeed = forwardSpeed;
+    lastSpeed = forwardVelocity;
 
     // check if reversing and set it to negative
     if (reverse) {
