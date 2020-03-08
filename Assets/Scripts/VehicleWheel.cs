@@ -61,10 +61,10 @@ public class VehicleWheel : MonoBehaviour {
     PositionInit();
 
     // figure out mins and maxes of child positioning
-    Vector3 wheelChildPosition = wheelChild.transform.localPosition;
-    wheelHighPosition = new Vector3(wheelChildPosition.x, wheelChildPosition.y + (wheelRadiusY * 2), wheelChildPosition.z);
+    Vector3 childPosition = wheelChild.transform.localPosition;
+    wheelHighPosition = new Vector3(childPosition.x, childPosition.y + (wheelRadiusY * 2), childPosition.z);
     wheelGroundPosition = Vector3.zero;
-    wheelLowPosition = new Vector3(wheelChildPosition.x, wheelChildPosition.y - wheelRadiusY, wheelChildPosition.z);
+    wheelLowPosition = new Vector3(childPosition.x, childPosition.y - wheelRadiusY, childPosition.z);
   }
 
   void SetPhysicsDefaults() {
