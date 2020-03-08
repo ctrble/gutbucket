@@ -70,7 +70,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 383916888538939616}
   m_Father: {fileID: 3644699783891008535}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -100,7 +101,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 6944707916032965876}
   m_Father: {fileID: 7920637627521108782}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -161,7 +163,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 7617636411082652427}
   m_Father: {fileID: 7403507365439168649}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -212,23 +215,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wheelModel: {fileID: 2477076674851831483}
-  initialWheelCenter: {x: 0, y: 0, z: 0}
-  initialWheelPosition: {x: 0, y: 0, z: 0}
   wheelChild: {fileID: 0}
   grounded: 0
   groundNormal: {x: 0, y: 1, z: 0}
-  steering: 0
-  skinWidth: 0
+  groundPoint: {x: 0, y: 0, z: 0}
   wheelRadiusX: 0
   wheelRadiusY: 0
-  hoverHeight: 0
-  wheelRestOffset: {x: 0, y: 0, z: 0}
-  wheelGroundedPosition: {x: 0, y: 0, z: 0}
-  wheelHighestPosition: {x: 0, y: 0, z: 0}
-  wheelLowestPosition: {x: 0, y: 0, z: 0}
-  wheelBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
+  steering: 0
+  skinWidth: 0
 --- !u!114 &5718585516583642507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,11 +235,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f18150dfb2844e45b12c048a820c703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineLength: 1
-  lengthOfLine: 20
+  maxLineSegmentLength: 1
+  maxLineLength: 20
+  currentLineLength: 1
   line: {fileID: 0}
   newPosition: {x: 0, y: 0, z: 0}
   lastPosition: {x: 0, y: 0, z: 0}
+  vehicleWheel: {fileID: 0}
 --- !u!120 &6623281295088398744
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -610,23 +606,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wheelModel: {fileID: 3299368035295423257}
-  initialWheelCenter: {x: 0, y: 0, z: 0}
-  initialWheelPosition: {x: 0, y: 0, z: 0}
   wheelChild: {fileID: 0}
   grounded: 0
   groundNormal: {x: 0, y: 1, z: 0}
-  steering: 0
-  skinWidth: 0
+  groundPoint: {x: 0, y: 0, z: 0}
   wheelRadiusX: 0
   wheelRadiusY: 0
-  hoverHeight: 0
-  wheelRestOffset: {x: 0, y: 0, z: 0}
-  wheelGroundedPosition: {x: 0, y: 0, z: 0}
-  wheelHighestPosition: {x: 0, y: 0, z: 0}
-  wheelLowestPosition: {x: 0, y: 0, z: 0}
-  wheelBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
+  steering: 0
+  skinWidth: 0
 --- !u!114 &8377829239464815606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -639,11 +626,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f18150dfb2844e45b12c048a820c703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineLength: 1
-  lengthOfLine: 20
+  maxLineSegmentLength: 1
+  maxLineLength: 20
+  currentLineLength: 1
   line: {fileID: 0}
   newPosition: {x: 0, y: 0, z: 0}
   lastPosition: {x: 0, y: 0, z: 0}
+  vehicleWheel: {fileID: 0}
 --- !u!120 &6789699005575387766
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -788,23 +777,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wheelModel: {fileID: 8875458864780020767}
-  initialWheelCenter: {x: 0, y: 0, z: 0}
-  initialWheelPosition: {x: 0, y: 0, z: 0}
   wheelChild: {fileID: 0}
   grounded: 0
   groundNormal: {x: 0, y: 1, z: 0}
-  steering: 1
-  skinWidth: 0
+  groundPoint: {x: 0, y: 0, z: 0}
   wheelRadiusX: 0
   wheelRadiusY: 0
-  hoverHeight: 0
-  wheelRestOffset: {x: 0, y: 0, z: 0}
-  wheelGroundedPosition: {x: 0, y: 0, z: 0}
-  wheelHighestPosition: {x: 0, y: 0, z: 0}
-  wheelLowestPosition: {x: 0, y: 0, z: 0}
-  wheelBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
+  steering: 1
+  skinWidth: 0
 --- !u!114 &4120067113518122094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -817,11 +797,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f18150dfb2844e45b12c048a820c703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineLength: 1
-  lengthOfLine: 20
+  maxLineSegmentLength: 1
+  maxLineLength: 20
+  currentLineLength: 1
   line: {fileID: 0}
   newPosition: {x: 0, y: 0, z: 0}
   lastPosition: {x: 0, y: 0, z: 0}
+  vehicleWheel: {fileID: 0}
 --- !u!120 &3304661855245452924
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1000,23 +982,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wheelModel: {fileID: 9119818463260986141}
-  initialWheelCenter: {x: 0, y: 0, z: 0}
-  initialWheelPosition: {x: 0, y: 0, z: 0}
   wheelChild: {fileID: 0}
   grounded: 0
   groundNormal: {x: 0, y: 1, z: 0}
-  steering: 1
-  skinWidth: 0
+  groundPoint: {x: 0, y: 0, z: 0}
   wheelRadiusX: 0
   wheelRadiusY: 0
-  hoverHeight: 0
-  wheelRestOffset: {x: 0, y: 0, z: 0}
-  wheelGroundedPosition: {x: 0, y: 0, z: 0}
-  wheelHighestPosition: {x: 0, y: 0, z: 0}
-  wheelLowestPosition: {x: 0, y: 0, z: 0}
-  wheelBounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
+  steering: 1
+  skinWidth: 0
 --- !u!114 &859163907627604851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1029,11 +1002,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f18150dfb2844e45b12c048a820c703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineLength: 1
-  lengthOfLine: 20
+  maxLineSegmentLength: 1
+  maxLineLength: 20
+  currentLineLength: 1
   line: {fileID: 0}
   newPosition: {x: 0, y: 0, z: 0}
   lastPosition: {x: 0, y: 0, z: 0}
+  vehicleWheel: {fileID: 0}
 --- !u!120 &5738464177670616594
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1157,10 +1132,311 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4823769447877145915}
   m_Father: {fileID: 628841171882212031}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1173350446953592161
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 963546313609643087}
+    m_Modifications:
+    - target: {fileID: 5961055902599446617, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_Name
+      value: Tire Tracks
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b44df50a08b954842809b2cc13981af9, type: 3}
+--- !u!4 &4823769447877145915 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1173350446953592161}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3664069502809898158
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8559554806704494415}
+    m_Modifications:
+    - target: {fileID: 5961055902599446617, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_Name
+      value: Tire Tracks
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b44df50a08b954842809b2cc13981af9, type: 3}
+--- !u!4 &6944707916032965876 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3664069502809898158}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4255526946832005969
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8242826663210426310}
+    m_Modifications:
+    - target: {fileID: 5961055902599446617, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_Name
+      value: Tire Tracks
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b44df50a08b954842809b2cc13981af9, type: 3}
+--- !u!4 &7617636411082652427 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+    type: 3}
+  m_PrefabInstance: {fileID: 4255526946832005969}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6334909510943801530
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8850593589336643377}
+    m_Modifications:
+    - target: {fileID: 5961055902599446617, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_Name
+      value: Tire Tracks
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b44df50a08b954842809b2cc13981af9, type: 3}
+--- !u!4 &383916888538939616 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5961055902599446618, guid: b44df50a08b954842809b2cc13981af9,
+    type: 3}
+  m_PrefabInstance: {fileID: 6334909510943801530}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6621076706858847926
 PrefabInstance:
   m_ObjectHideFlags: 0
