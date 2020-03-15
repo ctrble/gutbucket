@@ -12,6 +12,8 @@ public class CameraController : MonoBehaviour {
   public List<CinemachineVirtualCamera> player1Cameras = new List<CinemachineVirtualCamera>();
   public List<CinemachineVirtualCamera> player2Cameras = new List<CinemachineVirtualCamera>();
   public List<int> currentCameraIndexes;
+  public int player1Index = 0;
+  public int player2Index = 1;
   public List<InputController> inputControllers = new List<InputController>();
   public bool isVerticalSplit;
 
@@ -56,9 +58,10 @@ public class CameraController : MonoBehaviour {
     CloneMainCamera();
     ResizeViewPorts();
 
-    SpawnPlayer2Vcam(closeCameraPrefab, p2Layer);
+    // spawn order for priority
     SpawnPlayer2Vcam(midCameraPrefab, p2Layer);
     SpawnPlayer2Vcam(farCameraPrefab, p2Layer);
+    SpawnPlayer2Vcam(closeCameraPrefab, p2Layer);
 
     SetCullingMasks(p1Layer, p2Layer);
     SetLayerMasks(p1Layer, p2Layer);
@@ -160,12 +163,12 @@ public class CameraController : MonoBehaviour {
 
   void Update() {
     if (inputControllers[0].ChangeCamera()) {
-      EnableNextCamera(player1Cameras, 0);
+      EnableNextCamera(player1Cameras, player1Index);
     }
 
     if (GameController.instance.playerCount > 1) {
       if (inputControllers[1].ChangeCamera()) {
-        EnableNextCamera(player2Cameras, 1);
+        EnableNextCamera(player2Cameras, player2Index);
       }
 
       if (inputControllers[0].ToggleSplitScreen() || inputControllers[1].ToggleSplitScreen()) {
