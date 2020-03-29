@@ -66,4 +66,8 @@ public class InputController : MonoBehaviour {
   public bool ToggleSplitScreen() {
     return player.GetButtonDoublePressDown("Change Camera");
   }
+
+  public bool ToggleHeadlights() {
+    return player.GetButtonDown("Toggle_Headlights");
+  }
 }
