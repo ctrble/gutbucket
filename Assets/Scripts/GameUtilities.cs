@@ -21,6 +21,10 @@ public class GameUtilities : MonoBehaviour {
     DontDestroyOnLoad(gameObject);
   }
 
+  void Start() {
+    forwardReference = CameraController.instance.mainCamera.transform;
+  }
+
   public bool ObjectIsInLayerMask(int layer, LayerMask layerMask) {
     // https://answers.unity.com/questions/150690/using-a-bitwise-operator-with-layermask.html
     // https://answers.unity.com/questions/50279/index.html
@@ -41,6 +45,15 @@ public class GameUtilities : MonoBehaviour {
     if (relativeAngles.z > 180f)
       relativeAngles.z -= 360f;
     return relativeAngles;
+  }
+
+  public Vector3 ConvertInputForISO(Vector3 direction) {
+    Vector3 currentForward = forwardReference.eulerAngles;
+
+    // the only axis that matters is Y, reset the others
+    currentForward.x = 0;
+    currentForward.z = 0;
+    return Quaternion.Euler(currentForward) * direction;
   }
 
   public float ConvertToKPH(float metersPerSecond) {
