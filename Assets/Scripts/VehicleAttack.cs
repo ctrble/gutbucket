@@ -12,6 +12,7 @@ public class VehicleAttack : MonoBehaviour {
   [Header("Aiming")]
 
   public Transform vehicleAim;
+  public Transform barrelPosition;
   public LineRenderer lineRenderer;
   public int lengthOfLineRenderer;
   public Vector3[] linePoints;
@@ -56,9 +57,11 @@ public class VehicleAttack : MonoBehaviour {
     //   lineRenderer = vehicleAim.GetComponent<LineRenderer>();
     // }
 
-    // shooting = false;
-    // waitingToDisable = false;
-    // PoolBullets();
+    // shooty stuff
+    shooting = false;
+    waitingToDisable = false;
+    PoolBullets();
+
     // lineRenderer.positionCount = lengthOfLineRenderer;
     // linePoints = new Vector3[lengthOfLineRenderer];
     // targetChangeProgress = 0;
@@ -70,22 +73,22 @@ public class VehicleAttack : MonoBehaviour {
     // HandleRenderer();
 
     // TODO: clean this up
-    // if (playerInput.Shoot()) {
-    //   if (!shooting && !Conductor.instance.WithinQuarterBeat()) {
-    //     shooting = true;
-    //     testLight.SetActive(true);
-    //     audioSource.PlayOneShot(audioSource.clip);
-    //     ShootBullet();
-    //   }
+    if (!shooting && playerInput.Shoot()) {
+      //   if (!shooting && !Conductor.instance.WithinQuarterBeat()) {
+      shooting = true;
+      //     testLight.SetActive(true);
+      //     audioSource.PlayOneShot(audioSource.clip);
+      ShootBullet();
+    }
     //   else if (shooting && Conductor.instance.onBeat) {
     //     testLight.SetActive(true);
     //     audioSource.PlayOneShot(audioSource.clip);
     //     ShootBullet();
     //   }
     // }
-    // else if (shooting && !waitingToDisable) {
-    //   StartCoroutine(ToggleShot());
-    // }
+    else if (shooting && !waitingToDisable) {
+      StartCoroutine(ToggleShot());
+    }
   }
 
   void HandleAim(Vector3 direction) {
@@ -245,13 +248,13 @@ public class VehicleAttack : MonoBehaviour {
   void ShootBullet() {
     GameObject bullet = GetPooledObject();
     if (bullet != null) {
-      bullet.transform.position = vehicleAim.position;
+      bullet.transform.position = barrelPosition.position;
       bullet.transform.forward = vehicleAim.transform.forward;
 
       // give it the same velocity as the current object so it doesn't look like it's slow
       Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
-      bulletRB.velocity = playerRB.velocity;
-      bulletRB.angularVelocity = playerRB.angularVelocity;
+      // bulletRB.velocity = playerRB.velocity;
+      // bulletRB.angularVelocity = playerRB.angularVelocity;
 
       bullet.SetActive(true);
 
@@ -262,12 +265,14 @@ public class VehicleAttack : MonoBehaviour {
     }
   }
 
-  // IEnumerator ToggleShot() {
-  //   waitingToDisable = true;
-  //   yield return new WaitForSeconds(Conductor.instance.timeToNextBeat * 0.25f);
-  //   shooting = false;
-  //   waitingToDisable = false;
-  // }
+  IEnumerator ToggleShot() {
+    waitingToDisable = true;
+    float shotInterval = 0.5f;
+    // yield return new WaitForSeconds(Conductor.instance.timeToNextBeat * 0.25f);
+    yield return new WaitForSeconds(shotInterval);
+    shooting = false;
+    waitingToDisable = false;
+  }
 
   // void LateUpdate() {
   //   if (testLight.activeInHierarchy) {

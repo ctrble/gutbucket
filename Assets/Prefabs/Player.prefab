@@ -91,12 +91,12 @@ PrefabInstance:
     - target: {fileID: 651237416314403231, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1495899490180520107, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2477076674851831483, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
         type: 3}
@@ -123,6 +123,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 3535410527436911663, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.8679245
+      objectReference: {fileID: 0}
+    - target: {fileID: 3535410527436911663, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.8191746
+      objectReference: {fileID: 0}
+    - target: {fileID: 3535410527436911663, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.6918832
+      objectReference: {fileID: 0}
+    - target: {fileID: 3535410527436911663, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4172290217686185198, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
         type: 3}
       propertyPath: m_LightProbeUsage
@@ -147,6 +167,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ReflectionProbeUsage
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5169923482978170899, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: aimRadius
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5169923482978170899, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: verticalAimSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5353231245923547911, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.8679245
+      objectReference: {fileID: 0}
+    - target: {fileID: 5353231245923547911, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.8191746
+      objectReference: {fileID: 0}
+    - target: {fileID: 5353231245923547911, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.6918832
+      objectReference: {fileID: 0}
+    - target: {fileID: 5353231245923547911, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6155234278700323192, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
         type: 3}
@@ -207,6 +257,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500513863377334518, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: boostAmount
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500513863377334518, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
+        type: 3}
+      propertyPath: boostCapacity
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7748233333700173655, guid: 9a9dbed9d13114eeb96b8ec95a43e21a,
         type: 3}
