@@ -60,7 +60,7 @@ public class VehicleAttack : MonoBehaviour {
     // shooty stuff
     shooting = false;
     waitingToDisable = false;
-    PoolBullets();
+    // PoolBullets();
 
     // lineRenderer.positionCount = lengthOfLineRenderer;
     // linePoints = new Vector3[lengthOfLineRenderer];
@@ -74,18 +74,11 @@ public class VehicleAttack : MonoBehaviour {
 
     // TODO: clean this up
     if (!shooting && playerInput.Shoot()) {
-      //   if (!shooting && !Conductor.instance.WithinQuarterBeat()) {
       shooting = true;
-      //     testLight.SetActive(true);
-      //     audioSource.PlayOneShot(audioSource.clip);
-      ShootBullet();
+      // ShootBullet();
+      Weapon currentWeapon = transform.GetComponentInChildren<Weapon>();
+      currentWeapon.Attack();
     }
-    //   else if (shooting && Conductor.instance.onBeat) {
-    //     testLight.SetActive(true);
-    //     audioSource.PlayOneShot(audioSource.clip);
-    //     ShootBullet();
-    //   }
-    // }
     else if (shooting && !waitingToDisable) {
       StartCoroutine(ToggleShot());
     }
@@ -99,7 +92,7 @@ public class VehicleAttack : MonoBehaviour {
     // where are we pointing?
     Vector3 aimInput = GameUtilities.instance.ConvertInputForISO(direction);
     Vector3 aimDirection = CurrentAim(aimInput);
-    Debug.Log(aimInput);
+    // Debug.Log(aimInput);
 
     if (visibleTargets.Count != 0) {
       // take the closest dot and aim at that
@@ -245,25 +238,25 @@ public class VehicleAttack : MonoBehaviour {
     return aimDirection;
   }
 
-  void ShootBullet() {
-    GameObject bullet = GetPooledObject();
-    if (bullet != null) {
-      bullet.transform.position = barrelPosition.position;
-      bullet.transform.forward = vehicleAim.transform.forward;
+  // void ShootBullet() {
+  //   GameObject bullet = GetPooledObject();
+  //   if (bullet != null) {
+  //     bullet.transform.position = barrelPosition.position;
+  //     bullet.transform.forward = vehicleAim.transform.forward;
 
-      // give it the same velocity as the current object so it doesn't look like it's slow
-      Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
-      // bulletRB.velocity = playerRB.velocity;
-      // bulletRB.angularVelocity = playerRB.angularVelocity;
+  //     // give it the same velocity as the current object so it doesn't look like it's slow
+  //     Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
+  //     // bulletRB.velocity = playerRB.velocity;
+  //     // bulletRB.angularVelocity = playerRB.angularVelocity;
 
-      bullet.SetActive(true);
+  //     bullet.SetActive(true);
 
-      Debug.DrawRay(bullet.transform.position, bullet.transform.forward * 2f, Color.red, 5f);
+  //     Debug.DrawRay(bullet.transform.position, bullet.transform.forward * 2f, Color.red, 5f);
 
-      // forget me now, job's done
-      bullet = null;
-    }
-  }
+  //     // forget me now, job's done
+  //     bullet = null;
+  //   }
+  // }
 
   IEnumerator ToggleShot() {
     waitingToDisable = true;
@@ -274,38 +267,25 @@ public class VehicleAttack : MonoBehaviour {
     waitingToDisable = false;
   }
 
-  // void LateUpdate() {
-  //   if (testLight.activeInHierarchy) {
-  //     StartCoroutine(DisableLight());
+  // void PoolBullets() {
+  //   if (bulletPrefab != null) {
+  //     pooledBullets = new List<GameObject>();
+  //     for (int i = 0; i < amountToPool; i++) {
+  //       GameObject obj = Instantiate(bulletPrefab, transform);
+  //       obj.transform.localPosition = Vector3.zero;
+  //       obj.transform.localRotation = Quaternion.identity;
+  //       obj.SetActive(false);
+  //       pooledBullets.Add(obj);
+  //     }
   //   }
   // }
 
-  // IEnumerator DisableLight() {
-  //   yield return new WaitForEndOfFrame();
-  //   yield return new WaitForEndOfFrame();
-
-  //   testLight.SetActive(false);
+  // public GameObject GetPooledObject() {
+  //   for (int i = 0; i < pooledBullets.Count; i++) {
+  //     if (!pooledBullets[i].activeInHierarchy) {
+  //       return pooledBullets[i];
+  //     }
+  //   }
+  //   return null;
   // }
-
-  void PoolBullets() {
-    if (bulletPrefab != null) {
-      pooledBullets = new List<GameObject>();
-      for (int i = 0; i < amountToPool; i++) {
-        GameObject obj = Instantiate(bulletPrefab, transform);
-        obj.transform.localPosition = Vector3.zero;
-        obj.transform.localRotation = Quaternion.identity;
-        obj.SetActive(false);
-        pooledBullets.Add(obj);
-      }
-    }
-  }
-
-  public GameObject GetPooledObject() {
-    for (int i = 0; i < pooledBullets.Count; i++) {
-      if (!pooledBullets[i].activeInHierarchy) {
-        return pooledBullets[i];
-      }
-    }
-    return null;
-  }
 }
