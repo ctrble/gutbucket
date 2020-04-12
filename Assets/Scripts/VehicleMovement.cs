@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// need drivable interface?
+// icontrollable?
+// reverse
+// boost
+// steer
+// brake
+// addons?
+
 public class VehicleMovement : MonoBehaviour {
 
   public enum MovementState { Airborne, Tilt, Idle, Drive, Brake, Skid };

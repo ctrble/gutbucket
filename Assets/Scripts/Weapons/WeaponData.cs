@@ -4,8 +4,6 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "New WeaponData", menuName = "Weapon Data", order = 51)]
 public class WeaponData : ScriptableObject {
-  // [SerializeField]
-  // private AmmoData
 
   [SerializeField]
   private string weaponName;
@@ -19,8 +17,6 @@ public class WeaponData : ScriptableObject {
   private Vector3 spawnPosition;
   [SerializeField]
   private GameObject ammoPrefab;
-  // [SerializeField]
-  // private GameObject modelPrefab;
 
   public string WeaponName {
     get {
@@ -57,10 +53,4 @@ public class WeaponData : ScriptableObject {
       return ammoPrefab;
     }
   }
-
-  // public GameObject ModelPrefab {
-  //   get {
-  //     return modelPrefab;
-  //   }
-  // }
 }
