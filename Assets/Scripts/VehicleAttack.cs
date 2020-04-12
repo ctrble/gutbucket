@@ -22,7 +22,6 @@ public class VehicleAttack : MonoBehaviour {
   public Transform currentTarget;
   public Transform previousTarget;
   public float targetChangeProgress;
-  // private float dotTolerance = 0.985f;
   public float verticalAimSpeed;
   private float dotTolerance = 0.90f;
   public Vector3 aimYPosition;
@@ -47,11 +46,11 @@ public class VehicleAttack : MonoBehaviour {
       linePoints = new Vector3[lengthOfLineRenderer];
     }
 
-    // targetChangeProgress = 0;
+    targetChangeProgress = 0;
   }
 
   void Update() {
-    // FindVisibleTargets();
+    FindVisibleTargets();
     HandleAim(playerInput.AimVector());
 
     if (lineRenderer != null) {
@@ -89,6 +88,9 @@ public class VehicleAttack : MonoBehaviour {
     Vector3 aimDirection = CurrentAim(aimInput);
     // Debug.Log(aimInput);
 
+    Weapon currentWeapon = CurrentWeapon();
+    Vector3 currentAimPosition = currentWeapon.transform.position;
+
     if (visibleTargets.Count != 0) {
       // take the closest dot and aim at that
       float closestDot = 0;
@@ -111,14 +113,14 @@ public class VehicleAttack : MonoBehaviour {
       currentTarget = visibleTargets[targetIndex].transform;
 
       // dumb debugger
-      foreach (Transform target in visibleTargets) {
-        if (target == currentTarget) {
-          Debug.DrawRay(vehicleAim.position, DirectionToTarget(currentTarget), Color.red);
-        }
-        else {
-          Debug.DrawRay(vehicleAim.position, DirectionToTarget(target), Color.yellow);
-        }
-      }
+      // foreach (Transform target in visibleTargets) {
+      //   if (target == currentTarget) {
+      //     Debug.DrawRay(vehicleAim.position, DirectionToTarget(currentTarget), Color.red);
+      //   }
+      //   else {
+      //     Debug.DrawRay(vehicleAim.position, DirectionToTarget(target), Color.yellow);
+      //   }
+      // }
     }
 
     // Debug.Log(aimDirection);
@@ -139,8 +141,8 @@ public class VehicleAttack : MonoBehaviour {
       // get directions where we're aiming vs where the target is
       Vector3 directionToAimY = aimYPosition - vehicleAim.position;
       Vector3 directionToTargetY = targetYPosition - vehicleAim.position;
-      Debug.DrawRay(vehicleAim.transform.position, directionToAimY, Color.black);
-      Debug.DrawRay(vehicleAim.transform.position, directionToTargetY, Color.yellow);
+      // Debug.DrawRay(vehicleAim.position, directionToAimY, Color.black);
+      // Debug.DrawRay(vehicleAim.position, directionToTargetY, Color.yellow);
 
       // now get the signed angle between where we're aiming vs where the target would be (Y pos) along that same vector
       float angleToTarget = Vector3.SignedAngle(directionToAimY, directionToTargetY, Vector3.right);
@@ -166,56 +168,61 @@ public class VehicleAttack : MonoBehaviour {
   }
 
   Vector3 DirectionToTarget(Transform target) {
+    Weapon currentWeapon = CurrentWeapon();
+
     // not normalized here, contains useful info about distance too
-    return target.position - vehicleAim.position;
+    // return target.position - vehicleAim.position;
+    return target.position - currentWeapon.transform.position;
   }
 
-  // void FindVisibleTargets() {
-  //   ResetAllTargets();
+  void FindVisibleTargets() {
+    ResetAllTargets();
 
-  //   bool foundPotentialTargets = Physics.OverlapSphereNonAlloc(vehicleAim.position, aimRadius, potentialTargets, GameUtilities.instance.hitLayer) > 0;
+    Weapon currentWeapon = CurrentWeapon();
 
-  //   if (foundPotentialTargets) {
-  //     for (int i = 0; i < potentialTargets.Length; i++) {
-  //       if (potentialTargets[i] != null) {
-  //         AddTargetIfVisible(potentialTargets[i].transform);
-  //       }
-  //     }
+    bool foundPotentialTargets = Physics.OverlapSphereNonAlloc(currentWeapon.transform.position, currentWeapon.weaponData.MaxRange, potentialTargets, GameUtilities.instance.hitLayer) > 0;
 
-  //     if (visibleTargets.Count >= 2) {
-  //       // there are at least 2, so there's something to sort
-  //       SortTargetsByRange();
-  //     }
-  //   }
-  // }
+    if (foundPotentialTargets) {
+      for (int i = 0; i < potentialTargets.Length; i++) {
+        if (potentialTargets[i] != null) {
+          AddTargetIfVisible(potentialTargets[i].transform);
+        }
+      }
 
-  // void AddTargetIfVisible(Transform target) {
-  //   Vector3 toTarget = DirectionToTarget(target);
+      if (visibleTargets.Count >= 2) {
+        // there are at least 2, so there's something to sort
+        SortTargetsByRange();
+      }
+    }
+  }
 
-  //   // check if there's something in the way
-  //   // bool obstacleRay = Physics.Raycast(transform.position, toTarget.normalized, toTarget.magnitude, GameUtilities.instance.staticLayer);
-  //   bool obstacleRay = Physics.Raycast(vehicleAim.position, toTarget.normalized, toTarget.magnitude, GameUtilities.instance.staticLayer);
-  //   if (!obstacleRay) {
-  //     visibleTargets.Add(target);
-  //   }
-  // }
+  void ResetAllTargets() {
+    // this helps make sure the targets list is accurate and not remembering old info
+    // which is really important with multiple or disappearing targets
+    for (int i = 0; i < potentialTargets.Length; i++) {
+      potentialTargets[i] = null;
+    }
+    visibleTargets.Clear();
+  }
 
-  // void ResetAllTargets() {
-  //   // this helps make sure the targets list is accurate and not remembering old info
-  //   // which is really important with multiple or disappearing targets
-  //   for (int i = 0; i < potentialTargets.Length; i++) {
-  //     potentialTargets[i] = null;
-  //   }
-  //   visibleTargets.Clear();
-  // }
+  void AddTargetIfVisible(Transform target) {
+    Vector3 toTarget = DirectionToTarget(target);
 
-  // void SortTargetsByRange() {
-  //   // the closest target will be [0]
-  //   visibleTargets.Sort((x, y) => {
-  //     // return (transform.position - x.position).sqrMagnitude.CompareTo((transform.position - y.position).sqrMagnitude);
-  //     return (vehicleAim.position - x.position).sqrMagnitude.CompareTo((vehicleAim.position - y.position).sqrMagnitude);
-  //   });
-  // }
+    // check if there's something in the way
+    // bool obstacleRay = Physics.Raycast(transform.position, toTarget.normalized, toTarget.magnitude, GameUtilities.instance.staticLayer);
+    bool obstacleRay = Physics.Raycast(vehicleAim.position, toTarget.normalized, toTarget.magnitude, GameUtilities.instance.staticLayer);
+    if (!obstacleRay) {
+      visibleTargets.Add(target);
+    }
+  }
+
+  void SortTargetsByRange() {
+    // the closest target will be [0]
+    visibleTargets.Sort((x, y) => {
+      // return (transform.position - x.position).sqrMagnitude.CompareTo((transform.position - y.position).sqrMagnitude);
+      return (vehicleAim.position - x.position).sqrMagnitude.CompareTo((vehicleAim.position - y.position).sqrMagnitude);
+    });
+  }
 
   Vector3 CurrentAim(Vector3 input) {
     // forward if there's no input

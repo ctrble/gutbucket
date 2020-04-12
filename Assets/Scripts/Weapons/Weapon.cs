@@ -35,6 +35,15 @@ public class Weapon : MonoBehaviour {
     }
   }
 
+  IEnumerator Cooldown() {
+    coolingDown = true;
+
+    yield return new WaitForSeconds(weaponData.FireRate);
+
+    currentlyAttacking = false;
+    coolingDown = false;
+  }
+
   void PoolObjects() {
     if (weaponData.AmmoPrefab != null) {
       pooledAmmo = new List<GameObject>();
@@ -92,19 +101,10 @@ public class Weapon : MonoBehaviour {
       ammo.InheritParent(transform.root);
       ammo.InheritVelocity(inheritedVelocity);
 
-      Debug.DrawRay(ammoObject.transform.position, transform.forward * 50f, Color.red, 15f);
+      // Debug.DrawRay(ammoObject.transform.position, transform.forward * 50f, Color.red, 15f);
 
       // forget me now, job's done
       ammoObject = null;
     }
-  }
-
-  IEnumerator Cooldown() {
-    coolingDown = true;
-
-    yield return new WaitForSeconds(weaponData.FireRate);
-
-    currentlyAttacking = false;
-    coolingDown = false;
   }
 }
