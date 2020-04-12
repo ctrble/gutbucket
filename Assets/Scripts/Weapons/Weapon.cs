@@ -73,9 +73,12 @@ public class Weapon : MonoBehaviour {
       ammoObject.SetActive(true);
 
       // give it the same velocity as the current object so it doesn't look like it's slow
-      Vector3 inheritedVelocity = parentRB.GetPointVelocity(ammoObject.transform.position);
+      // Vector3 inheritedVelocity = parentRB.GetPointVelocity(ammoObject.transform.position);
+      Vector3 inheritedVelocity = Vector3.zero;
       ammo.InheritParent(transform.root);
       ammo.InheritVelocity(inheritedVelocity);
+
+      Debug.DrawRay(ammoObject.transform.position, transform.forward * 50f, Color.red, 15f);
 
       // forget me now, job's done
       ammoObject = null;
