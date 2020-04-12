@@ -17,6 +17,10 @@ public class Weapon : MonoBehaviour {
     InvokeRepeating("CheckParent", 0.5f, 0.5f);
   }
 
+  void OnDisable() {
+    CancelInvoke();
+  }
+
   void PoolObjects() {
     if (weaponData.AmmoPrefab != null) {
       pooledAmmo = new List<GameObject>();
@@ -70,6 +74,7 @@ public class Weapon : MonoBehaviour {
 
       // give it the same velocity as the current object so it doesn't look like it's slow
       Vector3 inheritedVelocity = parentRB.GetPointVelocity(ammoObject.transform.position);
+      ammo.InheritParent(transform.root);
       ammo.InheritVelocity(inheritedVelocity);
 
       // forget me now, job's done
