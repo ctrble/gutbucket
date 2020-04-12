@@ -7,7 +7,6 @@ public class Ammo : MonoBehaviour {
   private AmmoData ammoData;
   public Rigidbody ammoRB;
   public BoxCollider ammoCollider;
-  public float speed;
 
   void OnEnable() {
     if (ammoRB == null) {
@@ -18,7 +17,6 @@ public class Ammo : MonoBehaviour {
       ammoCollider = gameObject.GetComponent<BoxCollider>();
     }
 
-    speed = ammoData.MovementSpeed;
     StartCoroutine(Lifetime());
   }
 
@@ -27,13 +25,17 @@ public class Ammo : MonoBehaviour {
   // }
 
   void FixedUpdate() {
-    // ammoRB.AddRelativeForce(transform.forward * ammoData.MovementSpeed * Time.deltaTime);
+    MoveAmmo();
+  }
+
+  void MoveAmmo() {
     ammoRB.AddRelativeForce(Vector3.forward * ammoData.MovementSpeed * Time.deltaTime);
   }
 
-  // public void InheritVelocity(Vector3 velocity) {
-  //   transform.Translate(velocity);
-  // }
+  public void InheritVelocity(Vector3 velocity) {
+    // transform.Translate(velocity);
+    ammoRB.velocity = velocity + (transform.forward * ammoData.MovementSpeed * Time.deltaTime);
+  }
 
   IEnumerator Lifetime() {
     yield return new WaitForSeconds(ammoData.AmmoLifeTime);
