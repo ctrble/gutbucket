@@ -51,15 +51,38 @@ public class Ammo : MonoBehaviour {
 
   void OnTriggerEnter(Collider other) {
     bool isSelf = other.transform.root == parentObject;
-    bool isHitLayer = GameUtilities.instance.ObjectIsInLayerMask(other.gameObject.layer, GameUtilities.instance.hitLayer);
+    // bool isHitLayer = GameUtilities.instance.ObjectIsInLayerMask(other.gameObject.layer, GameUtilities.instance.hitLayer);
 
     if (!isSelf) {
-      Debug.Log(other.transform.name);
-      gameObject.SetActive(false);
+      Debug.Log(other.transform.root.name);
+      HandleHit(other);
+      // Debug.Log(other.transform.root.name);
+      // gameObject.SetActive(false);
 
-      if (isHitLayer) {
-        Debug.Log("go boom");
-      }
+      // IDamageable damagable = other.transform.root.gameObject.GetComponentInChildren<IDamageable>();
+
+      // if (damagable != null) {
+      //   Debug.Log("go boom");
+      //   Vector3 direction = transform.forward;
+      //   float strength = 750;
+      //   float damage = 1;
+      //   damagable.Damage(direction, strength, damage);
+      // }
+    }
+  }
+
+  void HandleHit(Collider other) {
+
+    gameObject.SetActive(false);
+
+    IDamageable damagable = other.transform.root.gameObject.GetComponentInChildren<IDamageable>();
+    if (damagable != null) {
+      Debug.Log("go boom");
+
+      Vector3 direction = transform.forward;
+      float strength = 750;
+      float damage = 1;
+      damagable.Damage(direction, strength, damage);
     }
   }
 
