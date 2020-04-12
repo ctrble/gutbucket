@@ -12,6 +12,8 @@ public class WeaponData : ScriptableObject {
   [SerializeField]
   private float fireRate;
   [SerializeField]
+  private float maxRange;
+  [SerializeField]
   private int maxAmmo;
   [SerializeField]
   private Vector3 spawnPosition;
@@ -29,6 +31,12 @@ public class WeaponData : ScriptableObject {
   public float FireRate {
     get {
       return fireRate;
+    }
+  }
+
+  public float MaxRange {
+    get {
+      return maxRange;
     }
   }
 

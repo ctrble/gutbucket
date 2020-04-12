@@ -5,13 +5,17 @@ using UnityEngine;
 public class Weapon : MonoBehaviour {
   public Rigidbody parentRB;
   [SerializeField]
-  private WeaponData weaponData;
+  public WeaponData weaponData;
   public List<GameObject> pooledAmmo;
+  public bool currentlyAttacking;
+  public bool coolingDown;
 
   void OnEnable() {
     if (parentRB == null) {
       parentRB = transform.root.GetComponent<Rigidbody>();
     }
+
+    currentlyAttacking = false;
 
     PoolObjects();
     InvokeRepeating("CheckParent", 0.5f, 0.5f);
@@ -19,6 +23,16 @@ public class Weapon : MonoBehaviour {
 
   void OnDisable() {
     CancelInvoke();
+  }
+
+  public void Attack() {
+    if (!currentlyAttacking) {
+      currentlyAttacking = true;
+      ShootAmmo();
+    }
+    else if (currentlyAttacking && !coolingDown) {
+      StartCoroutine(Cooldown());
+    }
   }
 
   void PoolObjects() {
@@ -59,7 +73,7 @@ public class Weapon : MonoBehaviour {
     return null;
   }
 
-  public void Attack() {
+  void ShootAmmo() {
     GameObject ammoObject = GetPooledObject();
     if (ammoObject != null) {
       Rigidbody ammoRB = ammoObject.GetComponent<Rigidbody>();
@@ -83,5 +97,14 @@ public class Weapon : MonoBehaviour {
       // forget me now, job's done
       ammoObject = null;
     }
+  }
+
+  IEnumerator Cooldown() {
+    coolingDown = true;
+
+    yield return new WaitForSeconds(weaponData.FireRate);
+
+    currentlyAttacking = false;
+    coolingDown = false;
   }
 }

@@ -14,7 +14,7 @@ public class VehicleAttack : MonoBehaviour {
   public Transform vehicleAim;
   public Transform barrelPosition;
   public LineRenderer lineRenderer;
-  public int lengthOfLineRenderer;
+  private int lengthOfLineRenderer = 2;
   public Vector3[] linePoints;
   public Vector3 toClosestTarget;
   public Collider[] potentialTargets = new Collider[10];
@@ -22,23 +22,11 @@ public class VehicleAttack : MonoBehaviour {
   public Transform currentTarget;
   public Transform previousTarget;
   public float targetChangeProgress;
-  public float aimRadius;
   // private float dotTolerance = 0.985f;
   public float verticalAimSpeed;
   private float dotTolerance = 0.90f;
   public Vector3 aimYPosition;
   public Vector3 targetYPosition;
-
-  [Space]
-  [Header("Shooting")]
-
-  public bool shooting;
-  public GameObject testLight;
-  private bool waitingToDisable;
-  public AudioSource audioSource;
-  public GameObject bulletPrefab;
-  public int amountToPool;
-  public List<GameObject> pooledBullets;
 
   void Start() {
     if (playerInput == null) {
@@ -53,35 +41,42 @@ public class VehicleAttack : MonoBehaviour {
       vehicleAim = transform.Find("Aim");
     }
 
-    // if (lineRenderer == null) {
-    //   lineRenderer = vehicleAim.GetComponent<LineRenderer>();
-    // }
+    if (lineRenderer == null) {
+      lineRenderer = vehicleAim.GetComponent<LineRenderer>();
+      lineRenderer.positionCount = lengthOfLineRenderer;
+      linePoints = new Vector3[lengthOfLineRenderer];
+    }
 
-    // shooty stuff
-    shooting = false;
-    waitingToDisable = false;
-    // PoolBullets();
-
-    // lineRenderer.positionCount = lengthOfLineRenderer;
-    // linePoints = new Vector3[lengthOfLineRenderer];
     // targetChangeProgress = 0;
   }
 
   void Update() {
     // FindVisibleTargets();
     HandleAim(playerInput.AimVector());
-    // HandleRenderer();
 
-    // TODO: clean this up
-    if (!shooting && playerInput.Shoot()) {
-      shooting = true;
-      // ShootBullet();
-      Weapon currentWeapon = transform.GetComponentInChildren<Weapon>();
+    if (lineRenderer != null) {
+      HandleRenderer();
+    }
+
+    if (playerInput.Shoot()) {
+      Weapon currentWeapon = CurrentWeapon();
       currentWeapon.Attack();
     }
-    else if (shooting && !waitingToDisable) {
-      StartCoroutine(ToggleShot());
-    }
+  }
+
+  Weapon CurrentWeapon() {
+    // TODO: cache this
+    Weapon currentWeapon = transform.GetComponentInChildren<Weapon>();
+    return currentWeapon;
+  }
+
+  void HandleRenderer() {
+    // TODO: this probably should go somewhere else
+    Weapon currentWeapon = CurrentWeapon();
+
+    linePoints[0] = currentWeapon.transform.position;
+    linePoints[1] = vehicleAim.TransformPoint(Vector3.forward * currentWeapon.weaponData.MaxRange);
+    lineRenderer.SetPositions(linePoints);
   }
 
   void HandleAim(Vector3 direction) {
@@ -170,12 +165,6 @@ public class VehicleAttack : MonoBehaviour {
     }
   }
 
-  // void HandleRenderer() {
-  //   linePoints[0] = vehicleAim.position;
-  //   linePoints[1] = vehicleAim.TransformPoint(Vector3.forward * aimRadius);
-  //   lineRenderer.SetPositions(linePoints);
-  // }
-
   Vector3 DirectionToTarget(Transform target) {
     // not normalized here, contains useful info about distance too
     return target.position - vehicleAim.position;
@@ -237,55 +226,4 @@ public class VehicleAttack : MonoBehaviour {
     Vector3 aimDirection = Vector3.RotateTowards(vehicleAim.transform.forward, projectedAim.normalized, Mathf.PI * 2, 0f);
     return aimDirection;
   }
-
-  // void ShootBullet() {
-  //   GameObject bullet = GetPooledObject();
-  //   if (bullet != null) {
-  //     bullet.transform.position = barrelPosition.position;
-  //     bullet.transform.forward = vehicleAim.transform.forward;
-
-  //     // give it the same velocity as the current object so it doesn't look like it's slow
-  //     Rigidbody bulletRB = bullet.GetComponent<Rigidbody>();
-  //     // bulletRB.velocity = playerRB.velocity;
-  //     // bulletRB.angularVelocity = playerRB.angularVelocity;
-
-  //     bullet.SetActive(true);
-
-  //     Debug.DrawRay(bullet.transform.position, bullet.transform.forward * 2f, Color.red, 5f);
-
-  //     // forget me now, job's done
-  //     bullet = null;
-  //   }
-  // }
-
-  IEnumerator ToggleShot() {
-    waitingToDisable = true;
-    float shotInterval = 0.5f;
-    // yield return new WaitForSeconds(Conductor.instance.timeToNextBeat * 0.25f);
-    yield return new WaitForSeconds(shotInterval);
-    shooting = false;
-    waitingToDisable = false;
-  }
-
-  // void PoolBullets() {
-  //   if (bulletPrefab != null) {
-  //     pooledBullets = new List<GameObject>();
-  //     for (int i = 0; i < amountToPool; i++) {
-  //       GameObject obj = Instantiate(bulletPrefab, transform);
-  //       obj.transform.localPosition = Vector3.zero;
-  //       obj.transform.localRotation = Quaternion.identity;
-  //       obj.SetActive(false);
-  //       pooledBullets.Add(obj);
-  //     }
-  //   }
-  // }
-
-  // public GameObject GetPooledObject() {
-  //   for (int i = 0; i < pooledBullets.Count; i++) {
-  //     if (!pooledBullets[i].activeInHierarchy) {
-  //       return pooledBullets[i];
-  //     }
-  //   }
-  //   return null;
-  // }
 }
