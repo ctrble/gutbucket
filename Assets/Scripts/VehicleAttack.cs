@@ -185,8 +185,8 @@ public class VehicleAttack : MonoBehaviour {
 
     if (foundPotentialTargets) {
       for (int i = 0; i < potentialTargets.Length; i++) {
-        bool targetIsSelf = potentialTargets[i].transform.root == transform.root;
-        if (potentialTargets[i] != null && !targetIsSelf) {
+        // don't target nothing, and don't target yourself
+        if (potentialTargets[i] != null && potentialTargets[i].transform.root != transform.root) {
           AddTargetIfVisible(potentialTargets[i].transform);
         }
       }
