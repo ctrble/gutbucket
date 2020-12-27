@@ -211,7 +211,6 @@ public class VehicleAttack : MonoBehaviour {
     Vector3 toTarget = DirectionToTarget(target);
 
     // check if there's something in the way
-    // bool obstacleRay = Physics.Raycast(transform.position, toTarget.normalized, toTarget.magnitude, GameUtilities.instance.staticLayer);
     bool obstacleRay = Physics.Raycast(vehicleAim.position, toTarget.normalized, toTarget.magnitude, GameUtilities.instance.staticLayer);
     if (!obstacleRay) {
       visibleTargets.Add(target);
