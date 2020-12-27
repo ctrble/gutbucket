@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class VehicleAttack : MonoBehaviour {
+
   [Header("Components")]
 
   public InputController playerInput;
@@ -184,7 +185,8 @@ public class VehicleAttack : MonoBehaviour {
 
     if (foundPotentialTargets) {
       for (int i = 0; i < potentialTargets.Length; i++) {
-        if (potentialTargets[i] != null) {
+        bool targetIsSelf = potentialTargets[i].transform.root == transform.root;
+        if (potentialTargets[i] != null && !targetIsSelf) {
           AddTargetIfVisible(potentialTargets[i].transform);
         }
       }
